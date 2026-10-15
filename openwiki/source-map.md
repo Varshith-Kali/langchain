@@ -44,10 +44,10 @@ sources:
     resource: repo://libs/partners/openai/langchain_openai/chat_models/base.py
   - id: openwiki-source-bd29e79613d5f366a00068f5
     resource: repo://libs/standard-tests/langchain_tests/base.py
-generated: { by: "openwiki/0.5.0", at: "2026-09-29T08:28:34.635Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-10-15T08:27:20.856Z" }
 verified:
   - by: openwiki/0.5.0
-    at: 2026-09-29T08:28:34.635Z
+    at: 2026-10-15T08:27:20.856Z
 ---
 
 ## Overview
@@ -166,6 +166,35 @@ This page provides a quick reference for locating code by topic in the LangChain
 └── README.md
 ```
 
+### Directory Overview by Purpose
+
+**Core Abstractions** (`libs/core/`): Foundational protocol and data structures
+- `langchain_core/language_models/` — Chat model interface, LLM caching, model profiles
+- `langchain_core/messages/` — Unified message representation with content blocks
+- `langchain_core/runnables/` — Composable pipeline protocol, LCEL operators
+- `langchain_core/tools/` — Tool abstraction, schema generation, tool conversion
+- `langchain_core/prompts/` — Templating, few-shot loading, image/multi-modal prompts
+- `langchain_core/output_parsers/` — Structured output marshaling, Pydantic integration
+- `langchain_core/callbacks/` — Event instrumentation, LangSmith integration, streaming
+- `langchain_core/retrievers.py` — Retriever protocol for RAG systems
+
+**Orchestration & Agents** (`libs/langchain_v1/`): High-level control flow and agent loops
+- `langchain/agents/factory.py` — Agent construction, LangGraph compilation
+- `langchain/agents/middleware/` — Model, tool, and lifecycle hooks (17+ implementations)
+- `langchain/agents/structured_output.py` — Response schema and typed outputs
+- `langchain/chat_models/base.py` — Dynamic model discovery by `provider:model` identifier
+- `langchain/mcp/` — Model Context Protocol adapter for MCP-based integrations
+- `langchain/rate_limiters/` — Rate limiting implementations for tool calls and model calls
+
+**Provider Integrations** (`libs/partners/`): Model, embedding, and tool provider implementations
+- Each provider package (openai, anthropic, ollama, etc.) implements core abstractions independently
+- Provider packages are released on separate cadences from core and langchain
+
+**Auxiliary Packages** (`libs/`):
+- `model-profiles/` — LLM capability and behavior metadata
+- `standard-tests/` — Shared test suites and conformance contracts
+- `text-splitters/` — Text chunking and splitting utilities
+
 ## Common Workflows
 
 ### Finding Agent-Related Code
@@ -282,8 +311,8 @@ The `BaseTool` in `repo://libs/core/langchain_core/tools/base.py` provides:
 
 ```
 User Applications
-  ├─→ langchain (v1.4.3)
-  │    ├─→ langchain-core (v1.6.5)
+  ├─→ langchain (v1.4.6)
+  │    ├─→ langchain-core (v1.6.10)
   │    └─→ LangGraph (state machines)
   │
   ├─→ langchain-core (direct use)
@@ -293,3 +322,29 @@ User Applications
 ```
 
 **Versioning**: Core is released independently with strict semantic versioning. LangChain and partners pin core versions. Partner packages are released independently per provider.
+
+## Entry Points for Common Tasks
+
+**Add a new provider**: See `/openwiki/partner-pattern.md` for full guidance.
+- Create provider package in `libs/partners/<provider>/`
+- Implement `BaseChatModel` from `langchain_core/language_models/chat_models.py`
+- Create `__init__.py` with public API exports
+- Release independently with semantic versioning
+
+**Add agent middleware**: Extend `/openwiki/agent-factory.md` with hook implementations.
+- Create middleware class in `langchain/agents/middleware/`
+- Implement `AgentMiddleware` protocol from `middleware/types.py`
+- Register in agent factory construction chain
+- Follow lifecycle hook signatures: `before_agent`, `before_model`, `after_model`, `after_agent`
+
+**Add message types**: See `/openwiki/messages.md` for content block design.
+- Create message subclass in `langchain_core/messages/`
+- Implement required `get_type()` and `get_lc_namespace()` methods
+- Add provider-specific serialization bridges if needed
+
+**Add tool conversion**: Reference `/openwiki/tools.md` for abstraction details.
+- Implement tool function with docstring or Pydantic model for schema
+- Use `tool_from_function()` or `create_tool()` to convert to `BaseTool`
+- Register in tool indexing for agent discovery if needed
+
+**Update model profiles**: Modify `libs/model-profiles/langchain_model_profiles/` for LLM metadata.

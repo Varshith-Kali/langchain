@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:584d7590d927cbab7fd482a36eefe6d6e23c985471086ac9d270b7e2506ebb96",
+  "pageVersion": "sha256:81dcae15bfd4148e8affb40c683e234e35d56375255359c00674432524b7d8ae",
   "claims": [
     {
       "id": "claim_cb5fe3f72803497eac3f09ebf02d97cd",
@@ -110,7 +110,7 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/integration_tests.yml#L152-L250",
-          "version": "repo-lines-v1:sha256:8b13d0714f4249cf34f163a21b2100013dbd521889e5b0aabc0ab66ff1980f79:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjZTUzNjI0Nzk1ZDA0YmIxMjI2ZjI1NTgxOGUxNmRlZWZhMGU1ZTVlODYxN2I3MDZkMjAyNzA5MWYxMGE3ZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkNGQwMzc4MWVmYzEwM2VkMTMzNTk1YWFlMjlmYzI4NDdmMTBkYmQ1MjAzMWFhMTZiNmYzYTI0ODdjNDA5OTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3ODljMzlkMGFiNzhkOWFjNzRjNDBiODEzZGRiNGNkYmRlMTc5Mjk0OTY4M2VhYzVmZTZiYjkyMDgwZTc2OGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiNjU0ZGI5YTFhZjZiYTQ1MDQ2NDViODQxNWM5ODZjOTlmMmMzYTU1YTUyMzgwN2IwMmRhZDllMjM1Y2Q5OGQifQ"
+          "version": "repo-lines-v1:sha256:2115831105b28a0999a48b7c68667e25326bf2e71cebc50ba69c394fdbbfda06:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjZTUzNjI0Nzk1ZDA0YmIxMjI2ZjI1NTgxOGUxNmRlZWZhMGU1ZTVlODYxN2I3MDZkMjAyNzA5MWYxMGE3ZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkNGQwMzc4MWVmYzEwM2VkMTMzNTk1YWFlMjlmYzI4NDdmMTBkYmQ1MjAzMWFhMTZiNmYzYTI0ODdjNDA5OTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3ODljMzlkMGFiNzhkOWFjNzRjNDBiODEzZGRiNGNkYmRlMTc5Mjk0OTY4M2VhYzVmZTZiYjkyMDgwZTc2OGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiNjU0ZGI5YTFhZjZiYTQ1MDQ2NDViODQxNWM5ODZjOTlmMmMzYTU1YTUyMzgwN2IwMmRhZDllMjM1Y2Q5OGQifQ"
         },
         {
           "resource": "repo://.github/workflows/integration_tests.yml#L56-L173",
@@ -124,7 +124,7 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/integration_tests.yml#L179-L248",
-          "version": "repo-lines-v1:sha256:1c86a362fb57aaaecfadc02baa2e94d89c96e28c57287ad431c1cad8a0f304b4:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1NjM5ZDFjYzRlNzE2NmUyYzlhYjNhM2Y4YTllMmIwMzNjYjcxNDZiYWU2MWU1YzZkOWM4YjIwYzEzYTNlZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyMzA3MzdhMjFmYWIzYjUzMjU2OWUxNGJkYTkyMzc0YjQ4NDc4NGNhZWZhOTgyZDIzYjU0ZjRhNjhjNDc4YTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0NmZmMzU1ZGZmZDExNTNiMDQ2NzhiMGIzMDVjNDBhNmU0MDNmYjk1YzEzNDUxNzZlODRmNTEzZTQyZmFiNjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjNTZmYTBhMzEzZjc0ZGRkZTRkMWM2M2UxY2RmMGJhMWExMDQ4ZTY3NmQ4OTI0YTZjOTNjYmEyMjc4MTNiNDYifQ"
+          "version": "repo-lines-v1:sha256:5e4b56e2300d06e0c012f9d2c9e81efa6d3365d7f45accbb51fa44062eee605d:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1NjM5ZDFjYzRlNzE2NmUyYzlhYjNhM2Y4YTllMmIwMzNjYjcxNDZiYWU2MWU1YzZkOWM4YjIwYzEzYTNlZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyMzA3MzdhMjFmYWIzYjUzMjU2OWUxNGJkYTkyMzc0YjQ4NDc4NGNhZWZhOTgyZDIzYjU0ZjRhNjhjNDc4YTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0NmZmMzU1ZGZmZDExNTNiMDQ2NzhiMGIzMDVjNDBhNmU0MDNmYjk1YzEzNDUxNzZlODRmNTEzZTQyZmFiNjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjNTZmYTBhMzEzZjc0ZGRkZTRkMWM2M2UxY2RmMGJhMWExMDQ4ZTY3NmQ4OTI0YTZjOTNjYmEyMjc4MTNiNDYifQ"
         }
       ]
     },
@@ -243,10 +243,24 @@
           "version": "repo-lines-v1:sha256:c471cb5fa38ddbdddb9877794899351fac37019114d3b43a7fd58dd3dbf401ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhY2ZmOWJkYTJhMDFlZTYzMjgxZmI3YzEzYzczODUxMzBjYjlmNDExYWM1ZTU4NDIwNmIxYTJmNWQxODM3YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZTBkZWNmMzZiNTUwY2YyMjJiZTJiYzE3ZDUxYTg1MTYzZWM0Nzc2YjZiYTY2ZjU5OGM4MTBhOWIyYzI3ODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5Yzc1MTJkNGI5ZDVmN2I2YjUzOWUzZWM3MjliZGMyNjg2NzQwMWRhY2NiZjFlZjZlNzM5ZDYxOTVjMmViMzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_2dc3344aad024669adf21c85205711b4",
+      "statement": "Model profile refresh (refresh_model_profiles.yml + _refresh_model_profiles.yml reusable workflow) runs daily at 8 AM UTC to pull latest model metadata from models.dev for in-monorepo partner integrations (anthropic, deepseek, fireworks-ai, groq, huggingface, mistral, openai, openrouter, perplexity, xai) and apply per-partner augmentations defined in profile_augmentations.toml; supports manual per-provider refresh with dropdown/override selection and creates or updates fixed-branch PR with changes.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/_refresh_model_profiles.yml#L1-L228",
+          "version": "repo-lines-v1:sha256:2ae684c80d3c38038bc0945379bd5c8057901242bc5950c7ba53889878f29152:eyJzZWxlY3RlZExpbmVDb3VudCI6MjI4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkZDc0MjFlOTQ1MjdlNDdhZWU0MmI2MTNlMjI0NDQ2Zjc1NmZlMWY1NDMyOGJkNDU3NjNkODJkOWI0ZTQwNDcwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiZjU1OTc5Y2U3MzAyMDMzZTZiMmZkN2Q4OGY1MzdhM2I4ZTA5MWVhMzA1YzgxMWZmYTEyNzRiZjU3NjRlYTVlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://.github/workflows/refresh_model_profiles.yml#L1-L159",
+          "version": "repo-lines-v1:sha256:0fa8bc7728f50d2bcc8fac68442b7dd25bea424292efe0637a447937eecb70e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjZmY5YTBiMDdmMDhkZmMzNWU5Yjg2ZTA0YWQ4MjA3OGQyNzE0Y2M3OThlNzFiNDFlYWE5YjkyZGNmYjcxNGVlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIxODk4ZWJkYWNkZWM3YWM5NGVhZWMwYmE5MWEwYzg4NGNiMWEwNGExNjRlZjA5ZTMyOTllZTkwODJhZTc2MDdiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.5.0",
-    "at": "2026-09-28T08:35:20.640Z"
+    "at": "2026-10-15T08:27:20.856Z"
   }
 }

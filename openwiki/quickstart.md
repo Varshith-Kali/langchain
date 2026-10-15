@@ -3,9 +3,6 @@ type: "Getting Started"
 title: "LangChain Repository Quick Start"
 description: "Entry point for engineers: orient to the monorepo structure, run first tests, understand what to edit for common tasks, and route to major development areas."
 tags: [quickstart, getting-started, monorepo, setup, development, first-steps, cli-reference]
-verified:
-  - by: openwiki/0.5.0
-    at: 2026-09-29T08:28:34.635Z
 sources:
   - id: openwiki-source-4d1645cb6317345817452838
     resource: repo://.pre-commit-config.yaml
@@ -43,7 +40,10 @@ sources:
     resource: repo://libs/partners/openai/langchain_openai/__init__.py
   - id: openwiki-source-48ce5ee900993294d349b4e8
     resource: repo://libs/standard-tests/langchain_tests/__init__.py
-generated: { by: "openwiki/0.5.0", at: "2026-09-29T08:28:34.635Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-10-15T08:27:20.856Z" }
+verified:
+  - by: openwiki/0.5.0
+    at: 2026-10-15T08:27:20.856Z
 ---
 
 ## Welcome to LangChain Development
@@ -60,8 +60,8 @@ LangChain is organized as a **three-layer architecture** in `/libs/`:
 
 ```
 /libs/
-├── core/              # langchain-core (v1.6.5): Base abstractions (Runnable, BaseChatModel, tools, prompts, messages)
-├── langchain_v1/      # langchain (v1.4.3): Agent orchestration, factory, middleware
+├── core/              # langchain-core (v1.6.10): Base abstractions (Runnable, BaseChatModel, tools, prompts, messages)
+├── langchain_v1/      # langchain (v1.4.6): Agent orchestration, factory, middleware
 ├── partners/          # Provider-specific integrations (OpenAI, Anthropic, Ollama, etc.)
 ├── standard-tests/    # Shared test suites for component conformance
 ├── text-splitters/    # Text splitting utilities
@@ -192,12 +192,9 @@ make integration_tests
 
 # Run a specific integration test
 make integration_tests TEST_FILE=tests/integration_tests/test_specific.py
-
-# Record new cassettes (requires API credentials in .env)
-make integration_tests RECORD=true
 ```
 
-See [Integration Testing](/openwiki/integration-tests.md) for detailed cassette management.
+See [Integration Testing](/openwiki/integration-tests.md) for detailed cassette management and how to record new cassettes.
 
 ### Full Local Validation
 

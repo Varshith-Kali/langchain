@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:48ea385d8432c2a0ff1d100837e0ca311a3ea341fe2963834d7c8eec9590d019",
+  "pageVersion": "sha256:1708c30493efd98ea13db767f774a363b2741c98f7cae9dca89c2f0ab0b49c44",
   "claims": [
     {
       "id": "claim_87d5d462354440a7bccb6dbe992c60d3",
@@ -166,7 +166,7 @@
       "evidence": [
         {
           "resource": "repo://libs/langchain_v1/tests/unit_tests/agents/test_agent_streaming.py#L1-L102",
-          "version": "repo-lines-v1:sha256:25758174bbd08af8beea7576102f76af4a376ed34133ff9f1b19b3e7f7456928:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3YTNhZGZjNTk1YjBmZTRhYWY5ODA4MzMzZTcwNjYxYjNhOWY2NGI3ZTFlZmM1MDg4NDUyNmRlNzcwOGQ3Yjg5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJkZWU5NWQ1YjNhYmE3MzdlOTFjZjM1NGI5OTJhZGFiYjExMzNkZTk2NWNmYmQ4YmVkZWFkZTdmMjkwNDFlYjc5In0"
+          "version": "repo-lines-v1:sha256:575477a9570f54c0e9aaf922a35e405d76d75056678b2edf37d2852a77f0ec0f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3YTNhZGZjNTk1YjBmZTRhYWY5ODA4MzMzZTcwNjYxYjNhOWY2NGI3ZTFlZmM1MDg4NDUyNmRlNzcwOGQ3Yjg5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJkZWU5NWQ1YjNhYmE3MzdlOTFjZjM1NGI5OTJhZGFiYjExMzNkZTk2NWNmYmQ4YmVkZWFkZTdmMjkwNDFlYjc5In0"
         }
       ]
     },
@@ -197,10 +197,44 @@
           "version": "repo-lines-v1:sha256:ad25efc0b9dde129f68999de4a00b228f4ebcdb5e3c41d1f5d86a71690598a81:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQ2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiZWUyODI4YWI5ODNjODVkZTdkOWUxOGNlZjVhYTQzZGY0MTJiYmRiY2FiMDc3ZjdmMDEzYjUzZWQ3ZTRlNzM3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlMGFjYmYwOTdlMWU4NjZmNGJlMzE5MjU3YmI0OWQ5OGQ1NWQwMWY4MTcxN2IzYzIyNTMwNDQ5NWYzNDMwMjZkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjYmVjNzljZDAzZDA2YmE2ZmU3MDBlMDhiZDA0ZjFmMDA0ZDFkZTg0ODMzMzMwN2U2ZGE5YTJlZjcyZTZmODZmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxODQwYjI2ZmUzZWI2OTY1MDNhZDY4ZmJmMTg5ZmU4ODAwYjQ3NzRkYmYzZGIzYWZmM2Q4YzBjMTA4NDg1ODVlIn0"
         }
       ]
+    },
+    {
+      "id": "claim_d9aa41954d3f4f0eaa9a47c98124b0d1",
+      "statement": "During streaming, if an error occurs after on_chat_model_start fires, on_llm_error receives the exception and a ChatGeneration merged from accumulated chunks. Callbacks can observe partial results before failure. The exception is then re-raised. This allows callbacks to observe and log failures while partial output remains accessible.",
+      "evidence": [
+        {
+          "resource": "repo://libs/core/langchain_core/language_models/chat_models.py#L833-L856",
+          "version": "repo-lines-v1:sha256:1c19e5928299e042429af5deae6b48b2c15aa0d928987771b51003c4f8b8b683:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmZGFjOTI2YWQ1YTRhZTVkZWQ5M2E0ODljOTYyZjlmYzY0MzVjYzMzYWQzM2ZmN2Q5NGM5Y2VmMGQ5YjEwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1NzY2NTEwODIxNzc5YmI2YTExMDg4Yzc4MjMyMWY2Y2Q1ZThhMDI1YTRhNmM3YzE4NDE5ZTVhNGQxZDJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxZGU1MDBmN2EyZGY3NDVkYWM3Y2NjNjNkOWYwYWE3M2U1NGNjYTA1NzlmYTViNGE3MjUyMjhjNDgyMGUyMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9a3733df3a4249eb8f2e6fb83c9b08ec",
+      "statement": "Token streaming (stream/astream) uses callback-driven delivery where the producer generates tokens as fast as it can. Event streaming (stream_events v3) uses pull-based backpressure where the producer waits until consumers pull via projection iterators. When a consumer loop breaks early in event streaming, the projection stops requesting events and the producer naturally pauses without unbounded buffering. Multiple independent consumers via different projections can observe the same stream and control their own pacing.",
+      "evidence": [
+        {
+          "resource": "repo://libs/core/langchain_core/language_models/chat_model_stream.py#L1-L45",
+          "version": "repo-lines-v1:sha256:9b0e7fb5e40ee88f22f766937245805b9ed747d105421138da2b46fe8f8522d4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1MTcxNTdmOTc5MDY1N2FmMGViZGVjZjNjM2ZmMTA4ZTQ2MGNhYWEzMjQ5MjczOGIxYThlMzU2YTI2MGE3NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1NmRhNjZiNTVjODU4ZjIxZWNkYmFlOTM4MWEzMTkwNDkxNTc4YjEzZmJkNGU0ZjRlYzU3NTQyYTU5N2NmODciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhYzM5ZDU1YjFjNDA5YWVlN2MzMThhZThmZWU0ZjEyOWVlODM1OWViMjczNjU3NWJlYmI4MDcxN2E1Mzk2OWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb78f7c1b33d422092096bb2a73bcc32",
+      "statement": "Tools can emit output deltas mid-execution via ToolRuntime.emit_output_delta() injected parameter, independent of tool completion. Agent streams via stream_events(version='v3') capture these deltas in the tool_call.output_deltas projection, making partial tool progress visible before the tool finishes. Deltas are separate from the final tool_call.output result.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/tools/__init__.py#L1-L22",
+          "version": "repo-lines-v1:sha256:03a2ba473f054930031b047bd777e7d4f68c72a2d3cde4077db1c70662b61cb6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExYjhkMjk0Yzc4NDJmNTU5OTk0YTFmOWVlNmMxNWY5ZDYzMWJhODhlNGRlZmQ1MWUxMjA3NmJkMDdkYWE1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NDE2ZTA5Zjc4YmEzMTZjMDMyNTY4MjEzYjg1NWVlNzU2ZTQxNTY1ZDkxOGYwOTUxOWM4MWZkNjIwZjQwNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://libs/langchain_v1/tests/unit_tests/agents/test_agent_streaming.py#L35-L49",
+          "version": "repo-lines-v1:sha256:ff83470ba838d5307f47d3c33116c3d57c8614964b7fa674747d8995068f966e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzNGU1OWQ3ZWFkY2E4YTkyOWEyNWZhNjBiYjU0ZmY2YjhhZmIwZmFkOTQwOTljZDFjODg5OGRjZDViZTk2OGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYjUyN2NkZTI1NTQ1ZWU5YTc3ODEwMDYzOWQ4ZWY2ZjI2NWNhZWQxYWYyYTMzNGUyY2IyMTIyMzI0M2VkNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmYjVmZWJiMWMzMWZjNDk3MDE1NmQ1ZDY5ZDg5Y2ZhNmRiNmU5ZTVlZTUzZDhkZTc4MTkxMDI3Mjg0ZDljNTYifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.5.0",
-    "at": "2026-09-28T08:35:20.640Z"
+    "at": "2026-10-15T08:27:20.856Z"
   }
 }

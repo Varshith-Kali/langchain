@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:08b16574d155fea41f84c89a32fa0f8c6c34fcf5a6f640ab81d2d0dd5f796884",
+  "pageVersion": "sha256:ce3d3187c43ba60070e2bf12adb4eaec8f31bd1cd4168985fc729db410d1f79f",
   "claims": [
     {
       "id": "claim_51e65b4f126f42d986b2766ee964d991",
@@ -211,10 +211,90 @@
           "version": "repo-lines-v1:sha256:98f8c09434deaeab4fa002aff9e2811f173ab68db004fa38ae7ed50afc6c8c63:eyJzZWxlY3RlZExpbmVDb3VudCI6NzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5ZjdjYjFlODMyZDUyOGZjNjFkOGU5YTg1NzYyNmVmYWRmNDI1NDlhY2YwMzU0YzVkYjMwYzU1M2E5MzQ5ZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3ODQ4NzIyMWE5ZGZiYTkxYzJmNjcyY2JkYmNiOGRhZjRlMDBhZjc2ZWM2NjFmNTI3M2NjOTZhMzMxYzNlNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5NTkzNDRiYjIzMGEzZDZiM2M1ZWFhNWMwYzg3NzEyNTFhYzU2YzliZjJjOWVjNmViMmJiYTBiNTEzYjhiZmMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_cfba6928c10b4e7d85816f7ba9bac193",
+      "statement": "RunnableLambda wraps Python callables into Runnables, accepting various signatures including simple functions, sync/async functions, functions with RunnableConfig parameters, callback managers, generators that return Iterator[Output], and functions that return nested Runnables for dynamic routing.",
+      "evidence": [
+        {
+          "resource": "repo://libs/core/langchain_core/runnables/base.py#L4707-L4752",
+          "version": "repo-lines-v1:sha256:956dc093d999a0d7ed81eb56a4d53c5191d58506c32fa3f3576cf3365fc3240f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0MWM4Y2UyNTJkZTA3MmU3MTgwMGI1Y2UyZjc1OTQ2ZDdiMDUzZWY4ZWY3NGRkN2Q0ODVkZmQ4OWQ3Y2M0Y2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZWY2ZDQ3NjI3Yzk4YzFjYWFkYTM4MDMzZDQzZTEyYzE5YTA3OTNiN2E5OTNjNWUwYTdmZDdlNjRiMmNmNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyY2UxMTdlYTU5M2VmMDg4MGMwNjY5NDFkZjg0ODdmZTU3ZDk1YTBhNjc2NTJlMzI3ZjA3ZTRlM2I5YmRmNDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNzI2N2EwZjQ3MzUwNzQxYmIwYzhjMmM5ODQ4MTQxNDg1NmI3NzBmNjliMDIzNWI1NTg0MjY2NTA2NWNkMDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_375532a1b88e42378327b4cb5621b3c0",
+      "statement": "RunnableLambda supports both sync and async implementations via separate func and afunc parameters; if only one is provided, async delegates to sync via run_in_executor.",
+      "evidence": [
+        {
+          "resource": "repo://libs/core/langchain_core/runnables/base.py#L4887-L4951",
+          "version": "repo-lines-v1:sha256:41892ea208c370fdaeab93bb4a6e372a390fb39d3afb4a22b40bd4bf18552dc9:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmZDdhMDdhODNkZDE5OTZmYjUxNjg0YjQyYWVjYWY0ZTkwZmI3OGJhNzIzMGU1NDJlZDdiZDAxZDQyMzAxYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExYTMwMjlmNjViNTdjYTk5OGZjYTJiNDcyZWQxZWNkZjA3ZDk3MTQzNmU1ZmEyYjc1ZTlhMGNkMDYyMWY0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyY2FhOTdmZDAyNDc0MjI3OGMxYTczY2E3MjlkYjk5Y2JlZTYwOGZlYmM1ZmRhZDVjZDhmODQ4ODg0ZDAwNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhYjRhMTQxYjVhZDE3ZWM1YmIxZjNmMTRhMjE1ODlmMzVlZGI4YzMxMzdhZGUwYmRkZmQzNzdjMjY3YWMzYmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2a31620a3e8847df95ea0d0199b01dc5",
+      "statement": "RunnableGenerator wraps generator functions with signature (Iterator[A] -> Iterator[B]) to enable true streaming, where output chunks are emitted as input chunks arrive; RunnableLambda blocks by default and should not be used for streaming without RunnableGenerator.",
+      "evidence": [
+        {
+          "resource": "repo://libs/core/langchain_core/runnables/base.py#L4403-L4493",
+          "version": "repo-lines-v1:sha256:179bcc96a593b4a960edbc8f7c82564ded89a7fd4a24ed55fd4556b1f603e6eb:eyJzZWxlY3RlZExpbmVDb3VudCI6OTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMzc4OTcwYzUwOGQzNTNiMjY2YmM2Y2ExYTY3MDg3MjkxYTUzMmMzZDY0ZjdlMjgwMjI2M2RkNjE1MWZjM2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTcxNTI1NzJlZTg0ZjEwOTA2Yzc0YjlmMmE5MjQzNGRkYWIwZTNjNDI4MTNiMDRlNTk3ZWZjZWM5NTFiMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFiZjE1MTBkZTU5MDM1NWZmMTM3MDU5N2RjODVmYTFmNThlNDI5OGM2ZjRmMTljMzY0NzI5NWY2NzQ3ODlmYTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzMzEwOTVkNWZkOTQ5N2Y0M2RkNjkwMWE5M2Y3NDNiYjY1NTUwNmEwNTBlMTVjMjgxNWJmMWM5ZDRmMTMyOTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_77f96f812b77463e8f0550703302e207",
+      "statement": "RunnableConfig carries execution context (tags, metadata, callbacks, run_name, run_id, max_concurrency, recursion_limit, configurable) through call stacks via var_child_runnable_config context variable, automatically merging configs from parent to child runnables rather than replacing them.",
+      "evidence": [
+        {
+          "resource": "repo://libs/core/langchain_core/runnables/config.py#L57-L141",
+          "version": "repo-lines-v1:sha256:7e4c495aa6f91a951e8f243f97dbadd932ab1b5b790a831b749033a3dfa6d93e:eyJzZWxlY3RlZExpbmVDb3VudCI6ODUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0NDE1ZGIxNWIwNDQyZjJiMWY1ZjNmZDNlMGVhMzIwOGVhYTQxNjRlOTJkMTU5Mjg1ZTNjOWQyZGM2OTEyZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0NmVhN2E5YWU3NmIzNTI0YTM4NWUzMmEwN2E1NmQwYTUyNjI1NTU0ZDAzNmI0ZjFiM2JkOTJlYzc3ODcxMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyNjhkYmU3ZTc4ZWFhZmQxNTliZTBmYTE0ZThmYjRiZmNlYzg2YjI3MTBjMTBlNGJkNTI3Y2JmOGU5MDFhYmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_50cc0d7ff2ac4cbbaa0303c95d6fb6bf",
+      "statement": "RunnableSequence automatically flattens nested sequences during construction so that chaining step1 | (step2 | step3) produces the same flat sequence as step1 | step2 | step3, eliminating unnecessary nesting overhead.",
+      "evidence": [
+        {
+          "resource": "repo://libs/core/langchain_core/runnables/base.py#L3173-L3212",
+          "version": "repo-lines-v1:sha256:9c5fbd48739b2f1a1e72fb272308a87ffbd791bac57d34a3b282f3e03578e52e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmZDdhMDdhODNkZDE5OTZmYjUxNjg0YjQyYWVjYWY0ZTkwZmI3OGJhNzIzMGU1NDJlZDdiZDAxZDQyMzAxYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3YmYwYjg5YzI4YzQwOWI5YmUyMWEwYTlkZmEyZWIxZmI0NzhhNTcwYjRmN2NlZDZhMzUwMTgxZDAyM2MzMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU5ZGM0MGNlZGE5MzgzNjA3NTYzNmQxNjlkYjJkNWUwNjAxODgxM2JlYjkyZGFiOWQ3MTA5YjQyMTQzY2RhZGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e3e005b46f2425bb8f51684aeb09ac3",
+      "statement": "RunnableParallel creates separate child runs for each branch key in callback traces via run_manager.get_child(f'map:key:{key}'), enabling per-branch monitoring and debugging.",
+      "evidence": [
+        {
+          "resource": "repo://libs/core/langchain_core/runnables/base.py#L4164-L4174",
+          "version": "repo-lines-v1:sha256:3a8e038cf4b0f92910a89a9a44ec1e5ccee27a8ae448b41edf1173d9dc18fe1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyNzBlNGViZTA4N2FkMDhhMDMzNmViYTE0ZGM0ZDRiMWVhZjA3ZWY1NjQ2YTE4MTJiYzkxMGQyMmVjMDQwOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxNTAwYmEwMzZkN2I3YTRhNWI5MTUxOGE5NmUzNmVkZWM0MTg3OGQxZmYxMDk3ODZmYjgyY2FiZmNhYzkyMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwN2ZhZGFhZGQwNDJiOWY4ODQ4MjMyYjgzOTVkZTE3YzUwNTE3ZGZlNWM5N2M0MDQyZWEwODE0ZDA2NzdjYWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53296d3e829d4ca084c9f4400fdbf4d2",
+      "statement": "Fan-out/fan-in patterns use RunnablePassthrough or dict syntax to apply multiple independent processors to the same input in parallel, collecting results in a dict for downstream aggregation.",
+      "evidence": [
+        {
+          "resource": "repo://libs/core/langchain_core/runnables/base.py#L3868-L3950",
+          "version": "repo-lines-v1:sha256:51a7d6b77803d9585e4f749ba8bcd2a3b2e403611c448b758555156df662e148:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjN2E2YTkzNGU1YjIzOTgzOTBmNmRhYWUyYmJkYTQzYjgzZjUwODE2Nzk3NDRhMDgxYjkxYjlhMTFjZWE2YmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTcxNTI1NzJlZTg0ZjEwOTA2Yzc0YjlmMmE5MjQzNGRkYWIwZTNjNDI4MTNiMDRlNTk3ZWZjZWM5NTFiMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhMzg5NzhjZGMxYThkNzYxMjBhMzFmZjg2MDU0NWNhNDNiMWE0ZWFjOWU2YWJiMmIwNWQ2MjE5ZTE4NDExODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzMGM4MWNlMmVjZWFlMjJkMjIyMDJmZmFkZGYxNjljNjU4OWM4YjFiYzc3ZmQ4MDU2ZmVhZDVmMzc0YjI0MmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6eb77493ceb840658f1dd221c8a7e40b",
+      "statement": "Subagents compose agents as tools or intermediate steps, allowing specialized agents to accumulate state independently before returning results to parent agents for modular hierarchical orchestration.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/factory.py#L912-L934",
+          "version": "repo-lines-v1:sha256:32e7a0b6ab9b32e2e10c029a6494204e3e63634dd2d21d2a0c8c1dc28a0d0d7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyMWEwZGZhYWE4ZmQ4NDczNmFiMmQyNGUxNzBkYjBmNWEwNjQyNDhlNGE0YTljNTljYzE4ODNiZmIzNjBjNmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYmI4NTE1YmM4NzFiNDUzYmY0YzI1MzRjMDE4OWZiYTg3NWFlZWM2MjU1ZmY4ZDM3ODFiOTIyYjM2MjY2ZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmM2YyYjA2Y2RiNDc3NjBmMDdlNGRjMTM2NWM0NGUzNjFjZGZmMGUzNDViYzI2OTlkMTFhMWExMTExMGIyZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmODFhNDY0ODc0YWM3ZDhkOThlZDBhOTE2Yjg4MTAwOWQ4NTdmOTE4ZGE4MDI2YTg0YmQ0YjU5YzVhZTczZDUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.5.0",
-    "at": "2026-09-28T08:35:20.640Z"
+    "at": "2026-10-15T08:27:20.856Z"
   }
 }

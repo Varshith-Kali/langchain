@@ -3,14 +3,13 @@ type: "Reference"
 title: "CI/CD Workflows: GitHub Actions and Release Process"
 description: "LangChain's GitHub Actions-based CI/CD system automating testing, linting, and release management across a monorepo with intelligent change detection, parallel matrix testing, and strict release gates."
 tags: [ci-cd, github-actions, testing, linting, release, pypi, monorepo, automation]
-verified:
-  - by: openwiki/0.5.0
-    at: 2026-09-28T08:35:20.640Z
 sources:
   - id: openwiki-source-34e57b5a3a0c875639ab72a7
     resource: repo://.github/scripts/check_diff.py
   - id: openwiki-source-f35e7c44cc1805709393a581
     resource: repo://.github/workflows/_lint.yml
+  - id: openwiki-source-a07b0c5b18c59179ed3b2380
+    resource: repo://.github/workflows/_refresh_model_profiles.yml
   - id: openwiki-source-c92cc62695c6def991956428
     resource: repo://.github/workflows/_release.yml
   - id: openwiki-source-c9c292f4ecabe180cdae27ce
@@ -31,7 +30,12 @@ sources:
     resource: repo://.github/workflows/pr_labeler.yml
   - id: openwiki-source-12805fbf767dc2a3e238645e
     resource: repo://.github/workflows/pr_lint.yml
-generated: { by: "openwiki/0.5.0", at: "2026-09-28T08:35:20.640Z" }
+  - id: openwiki-source-4eee829acf1dd31daa110f1a
+    resource: repo://.github/workflows/refresh_model_profiles.yml
+generated: { by: "openwiki/0.5.0", at: "2026-10-15T08:27:20.856Z" }
+verified:
+  - by: openwiki/0.5.0
+    at: 2026-10-15T08:27:20.856Z
 ---
 
 # CI/CD Workflows: GitHub Actions and Release Process
@@ -226,14 +230,47 @@ Scheduled daily (1 PM UTC) with manual dispatch override capability.
 
 **Job: `integration-tests`**:
 
-- Checks out primary monorepo plus external google-genai, google-vertexai, and langchain-aws repositories
-- Reorganizes external repos into local partner directories for unified testing
-- Authenticates to Google Cloud and AWS
+- Checks out primary monorepo plus external langchain-google (google-genai, google-vertexai) and langchain-aws repositories
+- Reorganizes external repos into local partner directories via explicit moves:
+  - `langchain-google/libs/genai` → `langchain/libs/partners/google-genai`
+  - `langchain-google/libs/vertexai` → `langchain/libs/partners/google-vertexai`
+  - `langchain-aws/libs/aws` → `langchain/libs/partners/aws`
+- Authenticates to Google Cloud and AWS for credential access
 - Runs per-package `make integration_tests` with all live API credentials injected
 - Uses concurrency locks per (package, python-version) to serialize same-package runs and prevent credential conflicts
-- Includes special installation logic: overlays local editable core and standard-tests packages atop checked-out partner versions
+- Installs test dependencies via `uv sync --group test --group test_integration`
+- Overlays local editable core and standard-tests packages for external repos (google-genai, google-vertexai, aws) to test against current branch code instead of published releases
 
-**Credentials**: Receives 30+ environment variables covering OpenAI, Anthropic, Google, AWS, Azure, Groq, MistralAI, HuggingFace, Mistral, Together, Cohere, and more.
+**Credentials**: Receives 30+ environment variables covering OpenAI, Anthropic, Google, AWS, Azure, Groq, MistralAI, Deepseek, Cohere, HuggingFace, Mistral, Together, Nomic, Ollama, OpenRouter, Perplexity, Typesafe, Upstage, Watsonx, XAI, and more.
+
+## Model Profile Refresh (`refresh_model_profiles.yml` & `_refresh_model_profiles.yml`)
+
+Scheduled daily (8 AM UTC) or manually triggered to refresh model metadata for partner integrations.
+
+### Provider Resolution
+
+**Job: `resolve-providers`**:
+
+- **Default (scheduled)**: Refreshes all in-monorepo partner providers (anthropic, deepseek, fireworks-ai, groq, huggingface, mistral, openai, openrouter, perplexity, xai)
+- **Manual override**: Accepts free-text provider IDs or dropdown selection; normalizes aliases (fireworks→fireworks-ai, mistralai→mistral)
+- **Scoped updates**: Can refresh single provider or subset by CSV; generates provider-specific PR titles and bodies
+- **Validation**: Rejects unknown provider IDs; requires at least one valid provider
+
+### Profile Refresh Execution
+
+**Reusable workflow: `_refresh_model_profiles.yml`**:
+
+1. **CLI setup**: Checks out `libs/model-profiles` from specified git ref or uses provided local path
+2. **Provider iteration**: For each provider, runs `langchain-profiles refresh --provider <id> --data-dir <path>` to pull latest model metadata from models.dev
+3. **Change detection**: Compares results against HEAD to identify modified profiles
+4. **Augmentation application**: The refresh command applies augmentations defined in partner package `profile_augmentations.toml` files (per-partner customizations)
+5. **PR creation**: Uses GitHub App token to create/update fixed-branch PR with refreshed profiles (supersedes stale PRs); includes automated change summary via `langchain-profiles summarize`
+6. **Staged paths**: Commits only modified `_profiles.py` and related files; glob patterns in caller control scope
+
+### Caller Integration
+
+- `refresh_model_profiles.yml` calls reusable `_refresh_model_profiles.yml` with resolved provider list and data directories
+- Partner packages can also call `_refresh_model_profiles.yml` directly for private repo profile management (external integration pattern)
 
 ## Auto-Labeling Workflows
 

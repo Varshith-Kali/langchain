@@ -10,14 +10,20 @@ sources:
     resource: repo://libs/langchain_v1/langchain/agents/middleware/human_in_the_loop.py
   - id: openwiki-source-c29f7722b0a4bcc0d760335e
     resource: repo://libs/langchain_v1/langchain/agents/middleware/model_retry.py
+  - id: openwiki-source-c6f9d38acc9416ca8b6a1629
+    resource: repo://libs/langchain_v1/langchain/agents/middleware/summarization.py
+  - id: openwiki-source-9de06fd4a71e5bbf586b7388
+    resource: repo://libs/langchain_v1/langchain/agents/middleware/tool_emulator.py
   - id: openwiki-source-219798683681ccdced950f4d
     resource: repo://libs/langchain_v1/langchain/agents/middleware/tool_error.py
+  - id: openwiki-source-a5eb2874945fdc55df0c578f
+    resource: repo://libs/langchain_v1/langchain/agents/middleware/tool_selection.py
   - id: openwiki-source-03e8ca0eebe37feda8566793
     resource: repo://libs/langchain_v1/langchain/agents/middleware/types.py
-generated: { by: "openwiki/0.5.0", at: "2026-09-28T08:35:20.640Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-10-15T08:27:20.856Z" }
 verified:
   - by: openwiki/0.5.0
-    at: 2026-09-28T08:35:20.640Z
+    at: 2026-10-15T08:27:20.856Z
 ---
 
 ## Overview
@@ -204,11 +210,12 @@ middleware = ToolErrorMiddleware(on_error=on_error)
 
 ### Control Flow & Approval Middleware
 
-**HumanInTheLoopMiddleware**: Pauses after model-requested tool calls and sends an interrupt with action summaries to a human reviewer. Uses the `after_model` hook to intercept AIMessage tool calls and send a HITLRequest for review. Supports approval, editing, rejection, or human-answered "respond" decision types. Tool calls are modified based on human feedback before execution.
+**HumanInTheLoopMiddleware**: Pauses before or during tool execution to request human approval. Operates in two distinct modes: `batched` (default, one interrupt per model turn) or `per_call` (one interrupt per gated tool call). Uses `after_model` hook in batched mode to intercept AIMessage tool calls and `wrap_tool_call` hook in per_call mode.
 
 ```python
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 
+# Batched mode: one interrupt per model turn with all gated tools
 hitl = HumanInTheLoopMiddleware(
     interrupt_on={
         "delete_file": True,  # All decision types allowed
@@ -216,29 +223,77 @@ hitl = HumanInTheLoopMiddleware(
             "allowed_decisions": ["approve", "reject"],
             "description": "Searching online databases",
         },
-    }
+    },
+    interrupt_mode="batched",  # default
+)
+
+# Per-call mode: one interrupt per gated tool call
+hitl_per_call = HumanInTheLoopMiddleware(
+    interrupt_on={
+        "delete_file": True,
+        "send_email": {
+            "allowed_decisions": ["approve", "edit", "reject", "respond"],
+            "description": lambda tool_call, state, runtime: f"Sending email to {tool_call['args'].get('to')}"
+        },
+    },
+    interrupt_mode="per_call",
 )
 ```
 
-The middleware constructs `ActionRequest` objects (with name, args, and optional description) and `ReviewConfig` objects (with action name and allowed decision types), sends them as a `HITLRequest` via `langgraph.interrupt()`, receives decisions back, and processes them:
+**Batched Mode** (`interrupt_mode="batched"`):
+- Intercepts `after_model` hook when AIMessage contains tool calls
+- Collects all gated tool calls into a single `HITLRequest`
+- Sends one interrupt with `ActionRequest` list and `ReviewConfig` list
+- Receives one `HITLResponse` with decisions list
+- Updates AIMessage to filter/modify tool calls before execution based on decisions
+- Decisions are processed in `after_model` hook; tool modifications happen in `wrap_tool_call`
+
+**Per-Call Mode** (`interrupt_mode="per_call"`):
+- Intercepts each gated tool call in `wrap_tool_call` hook before execution
+- Sends individual `ToolApprovalRequest` interrupt for each gated tool
+- Receives decision synchronously
+- Executes or blocks tool immediately based on decision
+- More precise control per tool but one interrupt per tool (more interrupts total)
+
+**Decision Types** (common to both modes):
 - **approve**: Tool call proceeds unchanged
-- **edit**: Tool call arguments are revised by the human
+- **edit**: Tool call arguments are revised by the human; requires `args_schema` validation in per-call mode
 - **reject**: Tool call is blocked; a ToolMessage with user feedback is sent to the model instead
-- **respond**: Tool execution is skipped; a synthetic ToolMessage with the human's answer is returned to the model
+- **respond**: Tool execution is skipped; a synthetic ToolMessage with the human's answer is returned to the model (content from human substitutes for tool result)
+
+**Description Configuration**:
+- Can be static string: `"description": "Dangerous operation"`
+- Can be callable: `"description": lambda tool_call, state, runtime: ...` for dynamic descriptions based on tool arguments and state
 
 ### Data Transformation & Privacy Middleware
 
-**PIIMiddleware**: Detects personally identifiable information (PII) in prompts, model responses, and tool outputs; optionally redacts or transforms it. Supports configurable detectors and redaction rules.
+**PIIMiddleware**: Detects personally identifiable information (PII) in prompts, model responses, and tool outputs; optionally redacts or transforms it. Supports configurable detectors (built-in patterns, regex, custom callables) and redaction rules with different strategies (replace, mask, anonymize). Can trigger an interrupt on PII detection or silently redact.
 
-**ContextEditingMiddleware**: Allows dynamic modification of agent context (system message, available tools) during execution.
+**ContextEditingMiddleware**: Allows dynamic modification of agent context (system message, available tools) during execution. Useful for updating system prompts or tool availability based on agent state or runtime conditions.
 
-**FileSearchMiddleware**: Integrates file search capabilities into the agent, retrieving relevant documents before model calls.
+**FilesystemFileSearchMiddleware**: Integrates file search capabilities into the agent, retrieving relevant documents before model calls. Searches filesystem paths and provides document embeddings for semantic retrieval.
+
+**SummarizationMiddleware**: Automatically summarizes long message histories to prevent context window overflow. Summarizes old messages and replaces them with summaries based on configurable trigger clauses (token count, message count, or custom predicates).
+
+### Tool Execution & Selection Middleware
+
+**ToolRetryMiddleware**: Automatically retries failed tool calls with exponential backoff. Similar to ModelRetryMiddleware but operates at the tool level, allowing more granular retry control per tool. Supports custom exception filtering and failure handlers.
+
+**ToolCallLimitMiddleware**: Enforces a maximum number of tool calls per agent invocation or per turn. Prevents infinite tool loops and runaway execution.
+
+**ToolErrorMiddleware**: (See above under Tool Execution Middleware section)
+
+**LLMToolSelectorMiddleware**: Delegates tool selection to an LLM rather than the primary model. Useful for decoupling tool selection from the main agent model, enabling lightweight first-stage selection.
+
+**LLMToolEmulator**: Emulates specified tools using an LLM instead of executing them. Allows testing and development with fake tool implementations. Can emulate all tools or specific ones by name.
 
 ### System Tools Middleware
 
-**ShellToolMiddleware**: Provides controlled shell command execution with configurable resource limits, sandboxing (host, Docker, Codex), timeout enforcement, and output truncation.
+**ShellToolMiddleware**: Provides controlled shell command execution with configurable resource limits, sandboxing (host, Docker, Codex), timeout enforcement, and output truncation. Registers a shell execution tool and enforces security policies.
 
-**TodoListMiddleware**: Adds persistent todo list management capability.
+**TodoListMiddleware**: Adds persistent todo list management capability. Registers todo management tools (add, complete, list, etc.) and persists state across invocations.
+
+**ProviderToolSearchMiddleware**: Searches for and discovers available tools from provider APIs (e.g., plugins, extensions) and registers them dynamically with the agent.
 
 ## Request and Response Types
 
@@ -462,6 +517,109 @@ class CommandReturningMiddleware(AgentMiddleware):
         )
 ```
 
+### Dynamic Tool Registration in Middleware
+
+Some middleware register additional tools dynamically. Middleware can declare tools via the `tools` attribute:
+
+```python
+from langchain.agents.middleware import AgentMiddleware
+from langchain_core.tools import tool
+
+@tool
+def my_tool(input: str) -> str:
+    """My tool description."""
+    return f"Result: {input}"
+
+class ToolRegisteringMiddleware(AgentMiddleware):
+    def __init__(self):
+        super().__init__()
+        self.tools = [my_tool]
+```
+
+These tools are merged with the agent's tools during graph compilation and become available to both the model and other middleware.
+
+### Tool Emulation and Mocking
+
+```python
+from langchain.agents.middleware import LLMToolEmulator
+
+# Emulate specific tools using an LLM (for testing without real tool execution)
+emulator = LLMToolEmulator(
+    tools=["search", "calculator"],  # Only emulate these
+    model="anthropic:claude-sonnet-4-5-20250929"
+)
+
+# Use in agent
+agent = create_agent(
+    model,
+    tools=[search, calculator, get_weather],
+    middleware=[emulator]
+)
+# Now search and calculator return LLM-generated responses; get_weather executes normally
+```
+
+### Structured Output Validation and Transformation
+
+When using structured output (response_format), middleware can transform or validate the structured response:
+
+```python
+from langchain.agents.middleware import AgentMiddleware, ModelResponse
+
+class StructuredOutputValidationMiddleware(AgentMiddleware):
+    def after_model(self, state, runtime):
+        # Access structured_response from the last AIMessage if present
+        # Validate or transform as needed
+        return None  # Modify state if necessary
+```
+
+## State Mutations and Control Flow
+
+### Using the `jump_to` Field for Loop Control
+
+Middleware can redirect agent execution using the `jump_to` ephemeral field in state. This field is set through `before_model` or `after_model` hooks and is consumed by the agent loop (not persisted):
+
+```python
+class LoopControlMiddleware(AgentMiddleware):
+    def after_model(self, state, runtime):
+        last_msg = state["messages"][-1]
+        
+        # Skip tool execution and jump directly to end
+        if hasattr(last_msg, 'content') and "DONE" in last_msg.content:
+            return {"jump_to": "end"}
+        
+        # Force another model call without executing tools
+        if some_condition:
+            return {"jump_to": "model"}
+        
+        # Default: execute tools (jump_to="tools")
+        return None
+```
+
+Valid values for `jump_to`:
+- `"tools"`: Execute tool calls (default when tool calls are present)
+- `"model"`: Loop back to the model for another invocation
+- `"end"`: Terminate agent loop and return results
+
+### State Merging with Reducers
+
+Middleware hooks return optional state updates (`dict[str, Any]`). These updates are merged into agent state using LangGraph's reducer semantics:
+
+- **Messages field** (uses `add_messages` reducer): Updates accumulate; new messages are **added** to existing messages, not replaced
+- **Non-reducer fields** (including `jump_to`, `structured_response`): Updates **replace** previous values; most recent update wins
+- **Custom fields** in extended state schemas: Follow reducer semantics if defined with a custom reducer, otherwise they replace
+
+Example:
+```python
+class StateUpdatingMiddleware(AgentMiddleware):
+    def before_agent(self, state, runtime):
+        # Add an initial message
+        from langchain_core.messages import HumanMessage
+        return {
+            "messages": [HumanMessage(content="System initialization message")],
+            "metadata": {"initialized": True}  # Custom field
+        }
+```
+
 ## Async and Sync Implementations
 
 Middleware can provide sync-only, async-only, or both implementations. The agent will:
@@ -530,6 +688,75 @@ Middleware hooks are automatically named in trace spans as `{middleware_name}.{h
 4. **Blocking Async**: Never use `asyncio.run()` or sync I/O in async middleware implementations.
 5. **Over-Composition**: Don't add more middleware than necessary; each layer adds latency.
 6. **Ignoring Command Semantics**: Don't assume Command fields will accumulate like messages; remember that non-reducer fields follow outermost-wins semantics.
+7. **Unhandled Exceptions in Hooks**: Exceptions in hooks propagate up and terminate the agent. Catch and handle expected exceptions, or document what exceptions the hook may raise.
+
+## Error Handling in Middleware
+
+Middleware can intercept and transform errors at multiple points:
+
+### Errors in Model Calls
+
+`wrap_model_call` can catch exceptions from the model:
+
+```python
+from langchain.agents.middleware import AgentMiddleware, ModelResponse
+from langchain_core.messages import AIMessage
+
+class ModelErrorHandlingMiddleware(AgentMiddleware):
+    def wrap_model_call(self, request, handler):
+        try:
+            return handler(request)
+        except Exception as e:
+            # Return a fallback response instead of propagating
+            return ModelResponse(
+                result=[AIMessage(content=f"Model error: {e}. Retrying...")]
+            )
+```
+
+### Errors in Tool Calls
+
+`wrap_tool_call` can catch tool exceptions and convert them to ToolMessages:
+
+```python
+from langchain.agents.middleware import AgentMiddleware, ToolCallRequest
+from langchain_core.messages import ToolMessage
+
+class ToolErrorMiddleware(AgentMiddleware):
+    def wrap_tool_call(self, request, handler):
+        try:
+            return handler(request)
+        except ValueError as e:
+            return ToolMessage(
+                content=f"Validation error: {e}",
+                tool_call_id=request.tool_call["id"],
+                name=request.tool_call["name"],
+                status="error",
+            )
+        # Let other exceptions propagate
+```
+
+### Control-Flow Exceptions
+
+Certain exceptions should not be caught by middleware:
+- `langgraph.types.interrupt()` results should bubble up unchanged
+- `langgraph.errors.GraphBubbleUp` should be re-raised immediately
+- `KeyboardInterrupt` and `SystemExit` should propagate
+
+```python
+from langgraph.errors import GraphBubbleUp
+from langgraph.types import Command
+
+class SafeErrorHandlingMiddleware(AgentMiddleware):
+    def wrap_tool_call(self, request, handler):
+        try:
+            return handler(request)
+        except (GraphBubbleUp, KeyboardInterrupt, SystemExit):
+            # Let control-flow exceptions through
+            raise
+        except Exception as e:
+            # Handle only regular exceptions
+            return ToolMessage(content=f"Error: {e}", ...)
+```
 
 ## Key Invariants and Lifecycle
 

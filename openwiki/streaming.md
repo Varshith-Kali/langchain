@@ -1,11 +1,8 @@
 ---
 type: "Concept"
-title: "Streaming: Token-by-Token Output"
-description: "How streaming works across LLM components and chains, token-by-token delivery via AIMessageChunk, callback integration, and memory/latency tradeoffs."
-tags: [streaming, token-streaming, llm-output, chat-models, callbacks, astream, real-time-feedback]
-verified:
-  - by: openwiki/0.5.0
-    at: 2026-09-28T08:35:20.640Z
+title: "Streaming: Tokens, Events, and Tool Outputs"
+description: "How streaming works across LLM components and agents: token-by-token delivery via AIMessageChunk, event-level streaming with stream_events(), tool output deltas via ToolRuntime, and error handling during streaming."
+tags: [streaming, token-streaming, event-streaming, llm-output, tool-output, chat-models, agents, callbacks, backpressure, astream, real-time-feedback]
 sources:
   - id: openwiki-source-c9313cf42f0120d86b20245f
     resource: repo://libs/core/langchain_core/callbacks/base.py
@@ -25,18 +22,29 @@ sources:
     resource: repo://libs/core/langchain_core/messages/system.py
   - id: openwiki-source-a1981e868973f6fd7f71e12e
     resource: repo://libs/core/langchain_core/runnables/base.py
+  - id: openwiki-source-ea6411b24fd22a66368f2170
+    resource: repo://libs/langchain_v1/langchain/tools/__init__.py
   - id: openwiki-source-ff9b926753e6cc6fe87acfe7
     resource: repo://libs/langchain_v1/tests/unit_tests/agents/test_agent_streaming.py
-generated: { by: "openwiki/0.5.0", at: "2026-09-28T08:35:20.640Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-10-15T08:27:20.856Z" }
+verified:
+  - by: openwiki/0.5.0
+    at: 2026-10-15T08:27:20.856Z
 ---
 
 ## Overview
 
-**Streaming** is the mechanism by which LangChain delivers model output incrementally, token by token, rather than waiting for the entire response. This enables real-time feedback in web UIs, console displays, and other user-facing contexts, and forms the foundation for building responsive applications that do not block on model latency.
+**Streaming** is the mechanism by which LangChain delivers output incrementally during model and agent execution, rather than waiting for the entire response. This enables real-time feedback in web UIs, console displays, and observability tools, and forms the foundation for building responsive applications that do not block on model latency.
 
-Instead of blocking with `invoke()` until a full response is ready, applications call `stream()` or `astream()` and receive a sequence of partial outputs as they arrive from the model. Each chunk is an `AIMessageChunk` carrying delta content. Callbacks intercept these chunks via the `on_llm_new_token` event, making it possible to observe, log, or react to each token without collecting the entire response first.
+LangChain implements three primary streaming patterns:
 
-Streaming flows through chains—prompts, models, output parsers, and other runnables—preserving incremental output delivery at each stage. By composition, a chain automatically supports streaming if all its components do. This page documents the mechanics of streaming across components, the trade-offs versus non-streaming invoke, and how to integrate streaming into applications.
+1. **Token streaming** (`stream()` / `astream()`): Delivers individual tokens or content blocks as `AIMessageChunk` objects. Callbacks fire `on_llm_new_token` for each token, enabling real-time observation and UI updates.
+
+2. **Event streaming** (`stream_events(version='v3')`): Yields structured protocol events (text-delta, tool_call_chunk, usage, etc.) with typed projections (`.text`, `.tool_calls`, `.usage`) that accumulate state. Implements pull-based backpressure to control producer pacing.
+
+3. **Tool output streaming** (via `runtime.emit_output_delta()`): Tools can emit partial results mid-execution, visible in agent streams and tool call projections before the tool completes.
+
+Streaming flows through chains—prompts, models, output parsers, and other runnables—preserving incremental output delivery at each stage. By composition, a chain automatically supports streaming if all its components do. This page documents the mechanics of all three streaming patterns, their control flow, integration with callbacks and agents, error handling, and memory/latency trade-offs.
 
 ## Synchronous Streaming: stream()
 
@@ -339,6 +347,47 @@ LangSmith automatically captures streaming via callbacks. When you use `stream()
 
 LangSmith projects these traces in the UI as token-by-token progress, enabling real-time observability of model streaming behavior.
 
+## Error Handling in Streaming
+
+**Location**: `repo://libs/core/langchain_core/language_models/chat_models.py#L833-L856`
+
+When an exception occurs during streaming, LangChain ensures error visibility to callbacks while preserving partial results for inspection.
+
+### Exception Flow
+
+1. **During streaming**: If an error occurs after `on_chat_model_start` has fired but before the stream completes:
+   - Any chunks already yielded are accumulated in memory.
+   - The exception is caught by the streaming handler.
+   - `on_llm_error` fires with the accumulated partial results as a `ChatGeneration`, allowing callbacks to inspect what was generated before failure.
+   - The exception is re-raised to the caller, propagating the error up the call stack.
+
+2. **Callback observation**: Callbacks can distinguish between partial and complete results:
+   - `on_llm_end` fires only on success with complete results.
+   - `on_llm_error` fires on failure with whatever was accumulated before the error.
+   - Both callbacks receive run_id for tracing, allowing error correlation with upstream operations.
+
+### Error Handling Example
+
+```python
+class ErrorTrackingCallback(BaseCallbackHandler):
+    def on_llm_error(self, error: Exception, **kwargs: Any) -> None:
+        # Capture partial results even if streaming fails
+        run_id = kwargs.get("run_id")
+        print(f"Streaming error on run {run_id}: {error}")
+        # Partial results are available if the error occurred mid-stream
+        # Example: model connection dropped after 50 tokens were sent
+
+for chunk in model.stream(
+    messages,
+    config=RunnableConfig(callbacks=[ErrorTrackingCallback()])
+):
+    # If an error occurs, the exception is raised here
+    # but callbacks have already seen the partial result
+    print(chunk.content, end="", flush=True)
+```
+
+This pattern ensures that partial results are not lost and can be logged or presented to users even when streaming fails.
+
 ## Streaming Through Chains
 
 Streaming flows through chains composed of runnables (prompts, models, parsers). The streaming protocol is implemented at each stage via the `stream()` and `transform()` methods on `Runnable`.
@@ -434,22 +483,57 @@ for text_delta in stream.text:  # Only text events
     print(text_delta)
 ```
 
+### Backpressure and Cancellation
+
+**Token streaming** (`stream()` / `astream()`): Uses callback-driven delivery. The producer (model) generates tokens as fast as it can; the consumer does not pace the producer. Callbacks fire immediately for each token. If the consumer loop breaks early, the stream iterator is disposed but the model may continue generating tokens internally until completion or the connection closes.
+
+**Event streaming** (`stream_events(version='v3')`): Uses pull-based backpressure. The producer waits until the consumer reads from a projection. If the consumer loop breaks early:
+- The projection stops requesting events.
+- The producer naturally pauses (no unbounded buffering).
+- Resources are released when the projection goes out of scope or is explicitly closed.
+
+When a consumer calls `break` or exits a loop consuming a projection:
+- The projection is no longer subscribed to the mux.
+- Other projections (if active) continue receiving events.
+- The producer may continue generating events if other consumers are active.
+- Once all consumers are done, the producer completes and cleanup occurs.
+
+This design allows multiple independent consumers (e.g., `.text`, `.tool_calls`) to observe the same stream without interference, with each consumer able to control its own pacing via backpressure.
+
 ## Streaming in Agent Execution
 
-**Location**: `repo://libs/langchain_v1/tests/unit_tests/agents/test_agent_streaming.py`
+**Location**: `repo://libs/langchain_v1/tests/unit_tests/agents/test_agent_streaming.py`, `repo://libs/langchain_v1/langchain/agents/factory.py`
 
-Agents created via `create_agent()` support streaming execution via `stream_events(version="v3")` on the returned agent graph. This enables real-time visibility into:
+Agents created via `create_agent()` support streaming execution via `stream_events(version="v3")` on the returned agent graph. This enables real-time visibility into the agent lifecycle at event granularity rather than token granularity.
 
-### Agent-Level Streaming
+### Agent Streaming Lifecycle
 
-- **Tool calls**: Each tool call is tracked as it's generated, with its ID, name, and arguments accumulating incrementally.
-- **Tool outputs**: When tools emit output deltas (via `runtime.emit_output_delta()`), these are visible in the stream as they arrive.
-- **Messages**: The full conversation history updates as the agent runs, with each turn visible immediately.
-- **Subgraphs**: When agent tools invoke nested agents, subgraph handles expose their own tool call projections, enabling hierarchical visibility.
+When an agent runs with `stream_events(version="v3")`, the following sequence occurs:
+
+1. **Initial state**: Agent graph begins with user input messages.
+2. **Model invocation**: The language model is called. `on_llm_start` fires. Tokens stream via `on_llm_new_token` callbacks and are visible in stream events.
+3. **Tool calls emitted**: Model produces tool call chunks. These accumulate in the `run.tool_calls` projection, with each tool call accessible incrementally.
+4. **Tool execution**: Each tool is invoked. `on_tool_start` fires. If the tool calls `runtime.emit_output_delta()`, those deltas appear in `tool_call.output_deltas`.
+5. **Tool results**: `on_tool_end` fires. Tool results are wrapped in `ToolMessage` and added to the agent state.
+6. **Loop decision**: The agent decides whether to continue looping (more tool calls) or exit (no more tools).
+7. **Hierarchical tools**: If a tool invokes a nested agent via `create_agent()`, its tool calls are visible via `run.subgraphs` with their own `tool_calls` projection.
+8. **Final output**: Agent completes. The final message list is accessible via `run.messages` and `run.output` projections.
+
+### Real-Time Visibility
+
+During this entire lifecycle, consumers can observe events as they fire:
+
+1. **Real-time visibility into tool calls**: The `run.tool_calls` projection accumulates tool calls as the model generates them. Each tool call is a `ToolCallStream` object with `tool_name`, `tool_call_id`, `args`, `completed`, `error`, and `output_deltas`.
+
+2. **Output deltas before completion**: Tools can stream output via `runtime.emit_output_delta()` before the tool completes. The `tool_call.output_deltas` projection makes these deltas visible immediately, enabling UIs to show tool progress without waiting for the tool to finish.
+
+3. **Messages projection**: The `run.messages` projection contains the full message history as it accumulates. Each model invocation adds an `AIMessage`, each tool result adds a `ToolMessage`.
+
+4. **Hierarchical observability**: When a tool delegates to a nested agent, `run.subgraphs` exposes subgraph handles, each with their own `tool_calls` projection. This allows observing both outer and inner agent operations independently.
 
 ### Tool Output Streaming
 
-Tools can emit output deltas mid-execution:
+Tools can emit output deltas mid-execution via the `ToolRuntime` injected parameter. `ToolRuntime.emit_output_delta()` allows tools to send partial results asynchronously, independent of tool completion:
 
 ```python
 from langchain_core.tools import tool
@@ -459,19 +543,31 @@ from langchain.tools import ToolRuntime
 def long_running_task(query: str, runtime: ToolRuntime) -> str:
     """A task that streams output as it runs."""
     for chunk in process_incrementally(query):
-        # Emit partial output immediately
+        # Emit partial output immediately; visible in streams
         runtime.emit_output_delta(chunk)
     
-    # Return final result
+    # Return final result (separate from streamed deltas)
     return compute_final_result(query)
 
-# When streaming the agent:
-for item in agent.stream_events({"messages": [HumanMessage("go")]}, version="v3"):
-    if item.get("type") == "tool_output_delta":
-        print(f"Tool emitted: {item['content']}")
+@tool
+async def async_streaming_tool(query: str, runtime: ToolRuntime) -> str:
+    """Async tool emitting output deltas."""
+    async for result in async_process(query):
+        runtime.emit_output_delta(result)
+    return final_result(query)
+
+# When streaming the agent, output deltas appear in tool_call projections:
+run = agent.stream_events({"messages": [HumanMessage("go")]}, version="v3")
+
+for tool_call in run.tool_calls:
+    print(f"Tool: {tool_call.tool_name}")
+    # output_deltas contains all emitted chunks before tool completes
+    for delta in tool_call.output_deltas:
+        print(f"  Delta: {delta}")
+    print(f"  Final result: {tool_call.output}")  # Merged after completion
 ```
 
-The agent stream captures these deltas in real-time, making them visible to observers before the tool completes.
+The agent stream captures these deltas in real-time, making them visible to observers before the tool completes. Deltas are accumulated in the `output_deltas` projection per tool call, separate from the final `output` result.
 
 ### Agentic Loop Streaming
 

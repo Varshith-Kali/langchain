@@ -5,13 +5,15 @@ description: Traces the runtime lifecycle of an agent from user input through mo
 tags: [agent-execution, control-flow, state-machine, loop-control, tool-dispatch, middleware, langchain]
 verified:
   - by: openwiki/0.5.0
-    at: 2026-09-28T08:35:20.640Z
+    at: 2026-10-15T08:27:20.856Z
 sources:
   - id: openwiki-source-71e882e1ac9757ea8e959a7c
     resource: repo://libs/langchain_v1/langchain/agents/factory.py
   - id: openwiki-source-03e8ca0eebe37feda8566793
     resource: repo://libs/langchain_v1/langchain/agents/middleware/types.py
-generated: { by: "openwiki/0.5.0", at: "2026-09-21T08:30:16.745Z" }
+  - id: openwiki-source-ff9b926753e6cc6fe87acfe7
+    resource: repo://libs/langchain_v1/tests/unit_tests/agents/test_agent_streaming.py
+generated: { by: "openwiki/0.5.0", at: "2026-10-15T08:27:20.856Z" }
 ---
 
 ## Overview
@@ -217,14 +219,19 @@ When structured output tools are configured but no regular tools exist, the mode
 
 ### Termination Conditions Summary
 
-The loop terminates when any of these are true:
+The loop terminates when any of these conditions is true:
 
-- Model does not call any tools (`tool_calls` is empty).
-- Middleware explicitly sets `jump_to='end'` in `before_model` or `after_model`.
-- A structured output tool is executed (its result is parsed into `state['structured_response']`).
-- A tool with `return_direct=True` is executed (after tool execution phase).
-- `state['structured_response']` is populated (after a model invocation with structured output tools).
-- An unhandled exception is raised during model invocation or tool execution.
+1. **No Tool Calls**: Model does not call any tools (`tool_calls` is empty). This is the primary exit condition when a model completes its reasoning and chooses not to take action.
+
+2. **Middleware Jump to End**: Middleware explicitly sets `jump_to='end'` in `before_model` or `after_model` via the `@hook_config(can_jump_to=['end'])` decorator. This allows middleware to terminate the loop early without model input.
+
+3. **Structured Output Ready**: A structured output tool is successfully executed and its result is parsed into `state['structured_response']`. The loop immediately exits with the populated structured response available to the caller.
+
+4. **Return Direct Tool**: A tool with `return_direct=True` is executed on the client side (checked after tool execution phase). This terminal action flag causes immediate loop exit regardless of model intent to continue.
+
+5. **Structured Response Populated (Model-to-Model Loop)**: After a model invocation with structured output tools configured but no regular tools, if `state['structured_response']` is now populated, the loop exits (checked by `_make_model_to_model_edge`).
+
+6. **Unhandled Exception**: An unhandled exception occurs during model invocation (unless caught by `wrap_model_call` middleware) or tool execution (unless caught by `wrap_tool_call` middleware or handled by `ToolNode.handle_tool_errors`). The exception propagates and terminates the graph.
 
 ## Tool Execution
 
@@ -439,6 +446,125 @@ The agent graph can be compiled with a `Checkpointer` to persist state between i
 ### Debug Mode
 
 Passing `debug=True` to `create_agent()` enables verbose logging of node execution, state updates, and edge traversals, useful for understanding the control flow during development.
+
+## Streaming and Events
+
+Agent execution emits fine-grained events via `stream_events(version='v3')` that allow real-time monitoring of the agentic loop:
+
+### Stream Events (v3)
+
+When invoked with `agent.stream_events(input, version='v3')`, the compiled graph yields protocol events at each node boundary and state transition:
+
+1. **Node Start Events** (`on_node_start`): Fired when a node begins execution (e.g., `model`, `tools`, middleware nodes).
+2. **Node End Events** (`on_node_end`): Fired when a node completes, with updated state.
+3. **State Updates**: Each command returned from a node is reflected in streaming state deltas.
+
+### Tool Call Projections
+
+The agent graph registers a `ToolCallTransformer` by default, which projects `tools` node events into a convenient `run.tool_calls` stream:
+
+- Each tool call is tracked by its `id` from the model's AIMessage.
+- As the tool executes, `output_deltas` are emitted (from `runtime.emit_output_delta()` calls).
+- When the tool completes, `completed=True` and optional `error` fields are populated.
+- Tool call streams are accessible via `for tc in run.tool_calls` during the graph execution.
+
+**Example: Streaming tool calls with output deltas**
+
+```python
+agent = create_agent(model, [my_tool])
+run = agent.stream_events({"messages": [HumanMessage("use my_tool")]}, version="v3")
+
+for tool_call in run.tool_calls:
+    print(f"Tool: {tool_call.tool_name} (id: {tool_call.tool_call_id})")
+    for delta in tool_call.output_deltas:
+        print(f"  Output chunk: {delta}")
+    if tool_call.error:
+        print(f"  Error: {tool_call.error}")
+```
+
+### Subgraph and Message Projections
+
+Additional transformers provide visibility into subagents and message evolution:
+
+- **Subagent Transformer**: Projects sub-agent tool invocations into `run.subagents` streams.
+- **Messages Transformer**: Provides `run.messages` projection of conversation history.
+
+Custom `transformers` can be supplied to `stream_events()` and are appended after built-in transformers.
+
+## Examples
+
+### Simple Agent Run
+
+```python
+from langchain_core.messages import HumanMessage
+from langchain_core.tools import tool
+from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
+
+@tool
+def add(a: int, b: int) -> int:
+    """Add two numbers."""
+    return a + b
+
+@tool
+def multiply(a: int, b: int) -> int:
+    """Multiply two numbers."""
+    return a * b
+
+# Create agent with model and tools
+model = init_chat_model("claude-3-5-sonnet-20241022", model_provider="anthropic")
+agent = create_agent(
+    model,
+    tools=[add, multiply],
+    system_prompt="You are a helpful assistant that solves math problems."
+)
+
+# Invoke the agent
+input_state = {"messages": [HumanMessage(content="What is 3 + 5 * 2?")]}
+result = agent.invoke(input_state)
+
+# Print the final conversation
+for msg in result["messages"]:
+    print(f"{msg.__class__.__name__}: {msg.content}")
+```
+
+**Execution trace:**
+1. Model invocation with user message and available tools.
+2. Model decides to call `multiply(5, 2)` first.
+3. Tool execution returns `10`; ToolMessage added to state.
+4. Model invoked again with tool result.
+5. Model calls `add(3, 10)`.
+6. Tool execution returns `13`; ToolMessage added.
+7. Model invoked again; no more tool calls needed.
+8. Loop terminates; result returned to user.
+
+### Streaming Agent Run with Tool Calls Visible
+
+```python
+from langchain_core.messages import HumanMessage
+from langchain.agents import create_agent
+
+agent = create_agent(model, tools=[add, multiply])
+
+# Stream events with tool_calls projection
+run = agent.stream_events(
+    {"messages": [HumanMessage(content="What is 10 + 5?")]},
+    version="v3"
+)
+
+# Consume tool_calls projection to see real-time progress
+for tool_call in run.tool_calls:
+    print(f"Calling {tool_call.tool_name}(id={tool_call.tool_call_id})")
+    for delta in tool_call.output_deltas:
+        print(f"  → {delta}")
+    if tool_call.completed:
+        print(f"  ✓ Completed")
+    elif tool_call.error:
+        print(f"  ✗ Error: {tool_call.error}")
+
+# Final output
+print(f"Agent response: {run.output}")
+```
 
 ## Example: Multi-Turn Agent with Tool Retry
 

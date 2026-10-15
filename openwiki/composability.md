@@ -8,22 +8,85 @@ sources:
     resource: repo://libs/core/langchain_core/runnables/base.py
   - id: openwiki-source-48e94bbe49ab4f33ba87e9cb
     resource: repo://libs/core/langchain_core/runnables/branch.py
+  - id: openwiki-source-079792f059657900794e2955
+    resource: repo://libs/core/langchain_core/runnables/config.py
   - id: openwiki-source-f9f4c1dc4f9cdf80d824ce15
     resource: repo://libs/core/langchain_core/runnables/fallbacks.py
   - id: openwiki-source-de6c904bd0171642bd50f6d9
     resource: repo://libs/core/langchain_core/runnables/router.py
-generated: { by: "openwiki/0.5.0", at: "2026-09-28T08:35:20.640Z" }
+  - id: openwiki-source-71e882e1ac9757ea8e959a7c
+    resource: repo://libs/langchain_v1/langchain/agents/factory.py
+generated: { by: "openwiki/0.5.0", at: "2026-10-15T08:27:20.856Z" }
 verified:
   - by: openwiki/0.5.0
-    at: 2026-09-28T08:35:20.640Z
+    at: 2026-10-15T08:27:20.856Z
 ---
-
 
 ## Overview
 
 Composability is the core feature of LangChain's Runnable protocol: the ability to declaratively chain, parallelize, and conditionally route components. Every composed chain automatically inherits sync (`invoke`), async (`ainvoke`), batch (`batch`/`abatch`), and streaming (`stream`/`astream`) capabilities—with optimizations for efficiency.
 
 The two main composition primitives are **`RunnableSequence`** (sequential chaining via the `|` operator) and **`RunnableParallel`** (parallel execution via dict syntax). Conditional routing is achieved with **`RunnableBranch`** and **`RouterRunnable`**.
+
+## Lambda Runnables and Custom Logic
+
+**`RunnableLambda`** wraps Python callables into Runnables, enabling custom business logic to compose seamlessly with other components.
+
+### Creating Lambda Runnables
+
+```python
+from langchain_core.runnables import RunnableLambda
+
+# Simple synchronous function
+def add_one(x: int) -> int:
+    return x + 1
+
+runnable = RunnableLambda(add_one)
+runnable.invoke(1)  # 2
+```
+
+`RunnableLambda` accepts functions with various signatures:
+
+- **Simple function**: `(Input) -> Output`
+- **Sync with config**: `(Input, RunnableConfig) -> Output`
+- **Sync with callback manager**: `(Input, CallbackManagerForChainRun) -> Output`
+- **Async variants**: `async (Input) -> Output` or `async (Input, RunnableConfig) -> Output`
+- **Generators**: `(Input) -> Iterator[Output]` for streaming support
+- **Nested runnables**: `(Input) -> Runnable[Input, Output]` for dynamic routing
+
+### Async and Dual Implementation
+
+`RunnableLambda` automatically delegates async to sync via `run_in_executor`. For native async support or dual implementations:
+
+```python
+def add_one(x: int) -> int:
+    return x + 1
+
+async def add_one_async(x: int) -> int:
+    await asyncio.sleep(0.1)
+    return x + 1
+
+# Provide both implementations
+runnable = RunnableLambda(add_one, afunc=add_one_async)
+runnable.invoke(1)  # Uses add_one (sync)
+await runnable.ainvoke(1)  # Uses add_one_async (native async)
+```
+
+### Streaming with Lambda Runnables
+
+By default, `RunnableLambda` does not support streaming—it calls `invoke` once and yields the full output. For true streaming support, use **`RunnableGenerator`**:
+
+```python
+from langchain_core.runnables import RunnableGenerator
+
+def character_stream(input: Iterator[str]) -> Iterator[str]:
+    """Takes a stream of characters and yields them with capitalization."""
+    for chunk in input:
+        yield chunk.upper()
+
+runnable = RunnableGenerator(character_stream)
+# Streams chunks as they arrive from previous step
+```
 
 ## Sequential Composition: The `|` Operator
 
@@ -41,8 +104,8 @@ sequence.invoke(1)  # (1 + 1) * 2 = 4
 
 The `|` operator creates a **`RunnableSequence`**, which:
 - Invokes each step in order, passing output to the next input
-- Flattens nested sequences for efficiency
-- Automatically preserves streaming properties if all steps support the `transform` method
+- Automatically flattens nested sequences for efficiency
+- Preserves streaming properties if all steps support the `transform` method
 - Supports both sync and async execution
 
 ### Data Flow
@@ -61,7 +124,7 @@ sequence = add_one | {
 sequence.invoke(1)  # {'mul_2': 4, 'mul_5': 10}
 ```
 
-## Parallel Composition: Branching with `+` and Dict Syntax
+## Parallel Composition: Branching with Dict Syntax
 
 Parallel execution invokes multiple Runnables concurrently on the **same input**. This is achieved via dict literals within a sequence or directly with **`RunnableParallel`**.
 
@@ -100,6 +163,37 @@ parallel.invoke(2)
 - Each branch executes concurrently, with chunks yielded in the order they complete
 - For async streaming, tasks are managed with `asyncio.wait(return_when=FIRST_COMPLETED)` to emit output as soon as any branch produces a chunk
 - The final result is a dict combining outputs from all branches
+
+## Fan-Out / Fan-In: Parallel Processing and Aggregation
+
+A common pattern is to fan out to multiple processors and collect results:
+
+```python
+from langchain_core.runnables import RunnableLambda, RunnablePassthrough
+
+def summarize(text: str) -> str:
+    return f"Summary: {text[:20]}..."
+
+def extract_entities(text: str) -> list[str]:
+    return ["entity1", "entity2"]
+
+def analyze_sentiment(text: str) -> str:
+    return "positive"
+
+chain = (
+    RunnablePassthrough()
+    | {
+        "summary": RunnableLambda(summarize),
+        "entities": RunnableLambda(extract_entities),
+        "sentiment": RunnableLambda(analyze_sentiment),
+    }
+)
+
+result = chain.invoke("Hello world")
+# {'summary': 'Summary: Hello world...', 'entities': ['entity1', 'entity2'], 'sentiment': 'positive'}
+```
+
+Each branch runs independently on the same input, and results are collected in a dictionary.
 
 ## Batching: Parallel Invocation over Multiple Inputs
 
@@ -218,6 +312,24 @@ router.invoke({"key": "add", "input": 3})     # 4
 
 The input is a dict with `"key"` (which Runnable to route to) and `"input"` (the data).
 
+### Conditional Routing in Chains
+
+Conditional execution is common in multi-step workflows:
+
+```python
+from langchain_core.runnables import RunnableBranch
+
+# Route based on input type
+route_logic = RunnableBranch(
+    (lambda x: "math" in x.lower(), math_chain),
+    (lambda x: "code" in x.lower(), code_chain),
+    general_chain,
+)
+
+output = route_logic.invoke("How do I calculate factorial?")
+# Executes math_chain
+```
+
 ## Composition with RunnablePassthrough
 
 **`RunnablePassthrough`** forwards inputs unchanged or with additional keys, useful for preserving context in parallel branches:
@@ -282,6 +394,21 @@ result = chain.invoke(
 )
 # Each step runs with inherited config while reporting to callbacks
 ```
+
+### RunnableConfig: Execution Context
+
+**`RunnableConfig`** carries execution context through the call stack:
+
+- **`tags`**: List of strings for filtering and organizing runs (e.g., `["prod", "async"]`)
+- **`metadata`**: Dict of JSON-serializable key-value pairs for additional context
+- **`callbacks`**: Callback handlers for tracing and event listening
+- **`run_name`**: Name for this execution run (defaults to Runnable name)
+- **`run_id`**: Unique UUID for the run (auto-generated if not provided)
+- **`max_concurrency`**: Maximum parallel tasks in batch/parallel operations
+- **`recursion_limit`**: Maximum recursion depth (default: 25)
+- **`configurable`**: Dict of runtime values for previously configured fields
+
+Config propagates from parent to child Runnables via `var_child_runnable_config` (a context variable), automatically merging configs rather than replacing them.
 
 ### Dict Composition and Key Selection
 
@@ -479,22 +606,33 @@ for chunk in chain.stream({"topic": "LLMs"}):
     print(chunk, end="", flush=True)
 ```
 
-### Fan-Out / Fan-In: Parallel Processing
+### Map + Reduce Pattern
+
+Process multiple items and aggregate results:
 
 ```python
-from langchain_core.runnables import RunnableLambda, RunnablePassthrough
+from langchain_core.runnables import RunnableLambda
 
+# Map: apply transformation to each item
+def process_item(item: dict) -> dict:
+    return {"input": item["text"], "length": len(item["text"])}
+
+# Chain with map + reduction
 chain = (
-    RunnablePassthrough()
-    | {
-        "summary": RunnableLambda(summarize),
-        "entities": RunnableLambda(extract_entities),
-        "sentiment": RunnableLambda(analyze_sentiment),
-    }
+    RunnableLambda(lambda items: [process_item(i) for i in items])
+    | RunnableLambda(lambda processed: {
+        "count": len(processed),
+        "total_length": sum(p["length"] for p in processed),
+        "average_length": sum(p["length"] for p in processed) / len(processed)
+    })
 )
 
-result = chain.invoke(text)
-# {'summary': '...', 'entities': [...], 'sentiment': 'positive'}
+result = chain.invoke([
+    {"text": "hello"},
+    {"text": "world"},
+    {"text": "example"}
+])
+# {'count': 3, 'total_length': 15, 'average_length': 5.0}
 ```
 
 ### Conditional Execution
@@ -589,6 +727,44 @@ chain = CustomRunnable() | another_step
 ```
 
 Custom Runnables are automatically compatible with all composition operators.
+
+## Agent Loops and State Accumulation
+
+Agents use composability patterns to build loops that iteratively refine state. While agents are typically built with LangGraph for complex orchestration, understanding composition patterns helps model this pattern:
+
+### Agent Loop Pattern
+
+An agent loop conceptually chains:
+1. **Model** (receives messages, returns tool calls)
+2. **Tool execution** (runs called tools in parallel)
+3. **Message accumulation** (adds tool results to conversation history)
+4. **Conditional loop back** (if more tools needed, return to step 1)
+
+This is orchestrated by agents using state management (see [agent-execution.md](/openwiki/agent-execution.md)) but reflects composition principles:
+- **Parallel execution** of tools (fan-out)
+- **State accumulation** of messages via reducers
+- **Conditional routing** based on model output and exit conditions
+
+### Subagent Pattern
+
+Agents can compose other agents as tools or as intermediate steps:
+
+```python
+# Agent calls another agent as a tool
+def call_research_agent(query: str) -> str:
+    """Call a specialized research agent."""
+    return research_agent.invoke({"messages": [HumanMessage(content=query)]})
+
+main_agent = create_agent(
+    model=ChatOpenAI(),
+    tools=[
+        call_research_agent,  # Subagent as tool
+        other_tool,
+    ]
+)
+```
+
+Subagents can accumulate state independently before returning results to the parent agent. This enables modular, hierarchical orchestration of complex workflows.
 
 ## Summary Table
 

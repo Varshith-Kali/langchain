@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:c36ed3bfa6acfdaf33179bd7cf4a4811864ccff80181c5c88b46227be3eacc14",
+  "pageVersion": "sha256:676f978f48d4de7b6d69790973114aea57904290fe14d032270e62c7c341c89b",
   "claims": [
     {
       "id": "claim_601f8ad960a04f2195c35dab22235db1",
@@ -247,10 +247,58 @@
           "version": "repo-lines-v1:sha256:00fd5f0b9df0762ae54ede2d60f5bbeb785b3055f04eeebf87c015e0171088de:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmM2JjYWUzMzhlZjQxNGQ2NmFhM2Q4MTUxNjA5MmE2MWMxNGZhNTllZGExMTMxMmVlMzgwM2UwNDNjZDAyMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5ZjViNTk4NTM5MWU3MTAyMWY1ZDZiYjczZTE1YzgzZDYwNmJmNTNhMTVhYzM1NGRhMGI0OWM3YzZjYWZlM2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5OWMwMTM5N2U5ODE1NGMzY2ZmMDZlZWY2MzhmNjAwODc0NjA1NTA0OTUzNTJlMmQwMDFkMTU4OThmYmUxODEifQ"
         }
       ]
+    },
+    {
+      "id": "claim_4e7e0e4b550c4c29b97bfe4e9fed3b0e",
+      "statement": "Agent execution emits fine-grained events via stream_events(version='v3') that enable real-time monitoring of the agentic loop. Node start/end events are fired at each node boundary; state updates are reflected in streaming state deltas. A ToolCallTransformer is registered by default to project tool calls into a run.tool_calls stream with output_deltas and error tracking.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/factory.py#L1900-L1926",
+          "version": "repo-lines-v1:sha256:1347de87cb2f24d85005599032cccb54730d58daa35fac7af91e39eb37840007:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlYzM4MGI1ZjgyOTVhMTYwNWYxYWYwMzkyOTM3YThmODhmMmJiNjVhYTQ4MjNjNGE0NTQxN2I3NTMzZDY2NjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2OTQ1ODA3NGU5MTcwNTdkZWU4OTdmYmFlNmFmYmZlMjlkYTI2MjgxNzIwZTM4YzlmM2QxZTYyNTA1YzBkZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjMTQxMGU0NjRjMTlkNTE2OWU1YWFjYzlkOGI2NjQ4NTBjNmQyOGJiMzhkNjk1OGM4ZTRmNjMxMDVmN2UyY2QifQ"
+        },
+        {
+          "resource": "repo://libs/langchain_v1/tests/unit_tests/agents/test_agent_streaming.py#L1-L50",
+          "version": "repo-lines-v1:sha256:b454834b23e3fa0f76898c4f465dbb10bb03a6924ef48d2f1fe6f2d6991e341c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhM2FkZmM1OTViMGZlNGFhZjk4MDgzMzNlNzA2NjFiM2E5ZjY0YjdlMWVmYzUwODg0NTI2ZGU3NzA4ZDdiODkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4MjY1YmRkYWUzODU2MTk5YzRjNzhmMGVlYzBjYWFlOTY3ZGJlMmU3ZTVhNDE3NDMyNGExNDVjMTQ5YmQyYzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_01a501c9b5f546e984e299253a1c088f",
+      "statement": "The agent loop exits when a model does not call any tools (tool_calls list is empty), checked by _make_model_to_tools_edge when the last AIMessage has zero tool_calls. This is the primary termination condition when a model completes reasoning without requesting tool execution.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/factory.py#L2016-L2019",
+          "version": "repo-lines-v1:sha256:02d1fd0f3f244392a0745c6d03a796a8d53966701cc43d2a4e407b4089c9d61f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTg1YWU4YTRjODI4YWZjNWVjNjU5YzdkN2M4MWIwNGI4Y2FhOWNiNzdjZDE4YjYxMmEwMGJmODgzNDY2N2IxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmQ0YTRmNWUyNmM4MjJiYzM4M2VlNzlkZWY0NzdkZDY5ODkzN2Q5YzlkY2Q3YThjYTIxOGY2YzljMDU0OWRhNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTgxNTNkNjgyMThiNjBlNmRkZTZmMzkxMWJiMGIxNmExNzA3NDcxMGM1ZDc4YjhhNzRhOTc0ODNmZTI4YTg4MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTQ4YjMyNDFiNDE5OTYwZmU0ZTgzNDEwZTQxYjEzYThmZTgzODA1NmQ2YmQ4MWFkMGVjNTBiZWI5MzZmMTAxNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9a66545f2ded4e23a62efff08fb25543",
+      "statement": "Middleware can explicitly set jump_to='end' in before_model or after_model hooks (when declared via @hook_config(can_jump_to=['end'])) to terminate the agent loop immediately without model input, allowing early exit based on external conditions or state inspection.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/factory.py#L1955-L1967",
+          "version": "repo-lines-v1:sha256:0d451d047bac7f2382a60cb9b5d8169f9d896bdf18d7c998d9fe20887c8a3578:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZGE2OGI3MDU0ZmU4MmYwNTFhMGVjZGY2M2MwNjI1MTI2YWQyMzg5M2M2ZTM2NTQyNDU2Y2IzY2FjMDE4NDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTYwMGE3M2QyZTAyZjM1MmI5MGZlZjFkOGQ2MzgxMWJhNGE4ZWUwYzFiZWFhN2FlNDY1OGYzNmFhMmUxOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhNWI5ZGMyZjFlMzVhNzZkMGVkZmQ4NDA4OTVkYzIwYzA4Mzg0ZGQ1OTg1NjNhZDNkMTQyNDNlOTJhZjRjZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkYTUxMTA3MTA2YmI1MWYyNGZmNzRkY2EyMDlhMWMwYWQwMzE4YTgwYzlhNTkwZWNkZmM4NmQ1OGJiOTExN2MifQ"
+        },
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/factory.py#L2001-L2006",
+          "version": "repo-lines-v1:sha256:a5d4dcd1e37c215ea50fd4ad2106990c39e68296f69382c3508bb2443a5aaff3:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzliM2NhMWU3YjBlOTMyZjRlZDA4NzU3MzY4ZDI4OTYzZWM1YWY5MDk2YmU2ZjZlOTVhYTE5Zjk4NTE0NjcxZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTUwMzJlOTY0ZDA5MzIzNTFlNWQxODUyNjkyODFiMTcxYTNhMDliMDhiMjg2ZTY2MWVhNDcwMzIzYzgyZWI0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGJmYzNjNTFkZWYyOTMxNmIxMTIyYzliODY0MjQzYWQzZWQ4OTJmZTYzYjE2ZDRmNjdhYTE3NmE3MWZhOTY1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODA4NTM2NDMzM2Q1YzE0ZmFjODY2NzdjYWUyMGI2MTQyMmY2NTQyNzJmZTg5ZjJlNjg5NGYxOTk0ODk4NWM2MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_92d50606b1d14d61a7e4dc9e38069546",
+      "statement": "A tool with return_direct=True causes immediate loop exit after execution, regardless of whether the model intended to continue. The _make_tools_to_model_edge checks all executed client-side tools and exits if any have return_direct=True, enabling terminal actions that stop the agent.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/factory.py#L2086-L2100",
+          "version": "repo-lines-v1:sha256:9a6ee896789e96e132bf87914ae3d8cfb729996eb8c009986d20f94ca9b478a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZDQ0NTdlYmFhZGIzOWUxMThlMWIwNTg2MzcwOTRkODdiNjYzMGQ4ODg1MzRmNTE5N2EwN2Y3MjFmY2ZkZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkNGE0ZjVlMjZjODIyYmMzODNlZTc5ZGVmNDc3ZGQ2OTg5MzdkOWM5ZGNkN2E4Y2EyMThmNmM5YzA1NDlkYTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4OGU5NjIyYzZmMjIwYjg4Y2Q3NjA3YTk4Nzk3ODI5NmUzYWEwYjY1ZmE1OTc0MTQzODk5NjJmODY5NTIyYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1ZDllNTM4YWIzNTg0NTk2MWQzNTA5Y2Y2ZDBhYmNjYzBhZmNmOWY4YjdjMTQzODM2MGI2OTNlMGIxMjJlZTQifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.5.0",
-    "at": "2026-09-28T08:35:20.640Z"
+    "at": "2026-10-15T08:27:20.856Z"
   }
 }

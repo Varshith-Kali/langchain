@@ -1,8 +1,8 @@
 ---
 type: "Concept"
-title: "Prompt Templates and Few-Shot Learning"
-description: "Prompt templates define message sequences and variable substitution patterns for chat models. Few-shot learning selects examples dynamically to teach models by example."
-tags: [prompt, template, few-shot, example-selection, variable-substitution, structured-output]
+title: "Prompt Templates and Variable Composition"
+description: "Prompt templates construct message sequences with variable substitution, supporting single-string and multi-message chat formats. Templates integrate with models via the Runnable interface and support composition via the + operator."
+tags: [prompt, template, few-shot, example-selection, variable-substitution, structured-output, composition, runnable]
 sources:
   - id: openwiki-source-1f4e0a5b877db4f050f2a34c
     resource: repo://libs/core/langchain_core/example_selectors/base.py
@@ -22,15 +22,15 @@ sources:
     resource: repo://libs/core/langchain_core/prompts/string.py
   - id: openwiki-source-204b5e61a019044332bd2dd4
     resource: repo://libs/core/langchain_core/prompts/structured.py
-generated: { by: "openwiki/0.5.0", at: "2026-09-03T15:18:34.589Z" }
+generated: { by: "openwiki/0.5.0", at: "2026-10-15T08:27:20.856Z" }
 verified:
   - by: openwiki/0.5.0
-    at: 2026-09-28T08:35:20.640Z
+    at: 2026-10-15T08:27:20.856Z
 ---
 
 ## Overview
 
-LangChain's **prompt templating system** provides a flexible, composable way to construct messages for language models. Prompts accept input variables, format them into message sequences, and optionally parse structured output. The system distinguishes between **string templates** (for raw text) and **chat templates** (sequences of typed messages). **Few-shot prompt templates** add the capability to select and inject examples dynamically, teaching models by demonstration.
+LangChain's **prompt templating system** provides a flexible, composable way to construct messages for language models. All prompt templates inherit from `BasePromptTemplate`, which implements the `RunnableSerializable` interface, enabling seamless integration with chains, async/await patterns, and observability hooks. Prompts accept input variables, format them into message sequences, and optionally parse structured output. The system distinguishes between **string templates** (for raw text) and **chat templates** (sequences of typed messages with explicit roles). **Few-shot prompt templates** add the capability to select and inject examples dynamically, teaching models by demonstration. Composition via the `+` operator merges templates and variables, creating complex nested prompts.
 
 ## Fundamental Concepts
 
@@ -116,18 +116,18 @@ Supported message types in the shorthand syntax:
 
 #### MessagesPlaceholder
 
-A `MessagesPlaceholder` injects a pre-formatted list of messages at a specific point in the prompt. This is essential for maintaining conversation history.
+A `MessagesPlaceholder` injects a pre-formatted list of messages at a specific point in the prompt. This is essential for conversation history, where messages are passed as-is without templating. Unlike other message templates, `MessagesPlaceholder` accepts raw message tuples, BaseMessage instances, or lists thereof.
 
 ```python
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 template = ChatPromptTemplate.from_messages([
     ("system", "You are a helpful assistant."),
-    MessagesPlaceholder("chat_history", optional=True),  # optional=True allows empty list
+    MessagesPlaceholder("chat_history", optional=True),
     ("human", "{question}"),
 ])
 
-# Pass conversation history
+# Pass conversation history as tuples or BaseMessage objects
 result = template.invoke({
     "chat_history": [
         ("human", "What's 2+2?"),
@@ -135,38 +135,103 @@ result = template.invoke({
     ],
     "question": "And 3+3?",
 })
-# Messages: [system, human, ai, human]
+# Messages: [SystemMessage, HumanMessage, AIMessage, HumanMessage]
 ```
 
-The `optional=True` flag allows the placeholder to be omitted from inputs; if not provided, an empty list is substituted. The `n_messages` parameter limits how many recent messages are included (useful for token budgets).
+**Optional Placeholders:**
 
-### Template Variable Substitution
+The `optional=True` flag makes the placeholder optional, automatically populated with an empty list if not provided:
 
-Prompts automatically detect variable names from template syntax and require them at format time.
+```python
+template = ChatPromptTemplate.from_messages([
+    ("system", "You are helpful."),
+    MessagesPlaceholder("chat_history", optional=True),
+    ("human", "{input}"),
+])
+
+# chat_history not required
+result = template.invoke({"input": "Hello"})
+# MessagesPlaceholder injects empty list, system and human messages follow
+```
+
+**Message Limiting:**
+
+The `n_messages` parameter limits how many recent messages are included, useful for staying within token budgets:
+
+```python
+template = ChatPromptTemplate.from_messages([
+    ("system", "You are helpful."),
+    MessagesPlaceholder("chat_history", n_messages=5),  # Keep only 5 recent
+    ("human", "{input}"),
+])
+
+# If chat_history has 10 messages, only the last 5 are included
+result = template.invoke({
+    "chat_history": messages_10_long,
+    "input": "Hello",
+})
+```
+
+**Integration with ChatPromptTemplate:**
+
+When a `ChatPromptTemplate` contains an optional `MessagesPlaceholder`, it is automatically added to `optional_variables` and its partial default (empty list) is set. This allows the entire template to be valid even when the placeholder is missing from input.
+
+### Template Variable Substitution and Validation
+
+Prompts automatically detect variable names from template syntax during initialization (via `get_template_variables()` for f-string and mustache, or Jinja2's AST for Jinja2). Required input variables are determined at construction time and validated against provided arguments at format/invoke time.
 
 ```python
 from langchain_core.prompts import PromptTemplate
 
 prompt = PromptTemplate.from_template("Q: {question}\nA: {answer}")
-print(prompt.input_variables)  # ['answer', 'question']
+print(prompt.input_variables)  # ['answer', 'question'] (sorted)
 
-# Variables are validated at runtime
+# Variables are validated at runtime; missing variables raise KeyError
 try:
     prompt.format(question="What?")  # Missing 'answer'
 except KeyError as e:
-    print(f"Error: {e}")
+    print(f"Error: {e}")  # "answer"
 ```
 
-**Partial application** pre-fills some variables, reducing the required input set:
+**Input Schema Inference:**
+
+Prompts implement `get_input_schema()` to generate a Pydantic model representing their input contract. This enables:
+- Runtime input validation in agents and APIs
+- Documentation generation (OpenAPI specs, CLI help)
+- IDE autocomplete for prompt parameters
+
+```python
+from langchain_core.prompts import ChatPromptTemplate
+
+template = ChatPromptTemplate.from_messages([
+    ("system", "You are helpful."),
+    ("human", "{question}"),
+    MessagesPlaceholder("chat_history", optional=True),
+])
+
+schema = template.get_input_schema()
+# Returns a Pydantic model with:
+#   question: str (required)
+#   chat_history: list[BaseMessage] (optional, defaults to [])
+```
+
+**Partial Variable Binding:**
+
+Partial application pre-fills some variables, reducing the required input set. `partial()` returns a new immutable instance without mutating the original:
 
 ```python
 prompt = PromptTemplate.from_template("User: {name}, Question: {question}")
-partial_prompt = prompt.partial(name="Bob")  # Bind 'name'
+partial_prompt = prompt.partial(name="Bob")  # Returns new PromptTemplate
 output = partial_prompt.format(question="How are you?")
-# Only 'question' is required now
+
+# Original is unchanged
+print(prompt.input_variables)      # ['name', 'question']
+print(partial_prompt.input_variables)  # ['question']
 ```
 
-When a prompt has exactly **one** input variable, the template can accept a non-dict argument directly:
+**Single-Variable Convenience:**
+
+When a prompt or ChatPromptTemplate has exactly **one** input variable, `invoke()` accepts a scalar value directly (not wrapped in a dict):
 
 ```python
 template = ChatPromptTemplate.from_messages([
@@ -174,6 +239,9 @@ template = ChatPromptTemplate.from_messages([
     ("human", "{input}"),
 ])
 result = template.invoke("Hello!")  # Auto-wraps as {"input": "Hello!"}
+
+# Equivalent to:
+result = template.invoke({"input": "Hello!"})
 ```
 
 ## Few-Shot Prompt Templates
@@ -411,7 +479,12 @@ This is useful for tasks requiring consistent, parseable output (e.g., fact extr
 
 ## Runnable Interface and Chaining
 
-All prompts inherit from `RunnableSerializable`, making them compatible with LangChain's chain-building system.
+All prompts inherit from `RunnableSerializable`, implementing the Runnable interface. This enables prompts to:
+- Compose with other Runnable components (models, parsers, chains) via the `|` (pipe) operator
+- Support both synchronous and asynchronous execution
+- Participate in streaming and batch operations
+- Integrate with observability and tracing infrastructure
+- Accept configuration dictionaries (run_id, tags, metadata) for debugging and monitoring
 
 ```python
 from langchain_core.prompts import ChatPromptTemplate
@@ -429,52 +502,119 @@ parser = StrOutputParser()
 # Chain: prompt → model → parser
 chain = template | model | parser
 
+# Synchronous
 result = chain.invoke({"topic": "the internet"})
-print(result)
+
+# Asynchronous
+result = await chain.ainvoke({"topic": "the internet"})
+
+# Batch processing
+results = chain.batch([{"topic": "the internet"}, {"topic": "AI"}])
+
+# With configuration and tracing
+result = chain.invoke(
+    {"topic": "the internet"},
+    config={"tags": ["poetry"], "metadata": {"version": "1.0"}}
+)
 ```
 
-**Key methods:**
-- `invoke(dict) -> PromptValue`: Synchronous formatting.
-- `ainvoke(dict) -> PromptValue`: Asynchronous formatting.
-- `stream(dict)`: Streaming mode (rarely used for prompts, more common downstream).
-- `batch(list[dict])`: Batch formatting multiple inputs.
+**Core Methods:**
+- `invoke(dict) -> PromptValue`: Synchronous formatting, returning a structured `PromptValue` (StringPromptValue or ChatPromptValue).
+- `ainvoke(dict) -> PromptValue`: Asynchronous variant, enabling non-blocking formatting in async contexts.
+- `batch(list[dict])`: Format multiple inputs simultaneously, useful for batch processing.
+- `stream(dict)`: Streaming mode (rarely used for prompts; more common for downstream components like models).
+- `get_input_schema()`: Returns a Pydantic model for input validation, used by agents and APIs.
+
+**Return Types:**
+- Prompts return `PromptValue` objects, not strings. `PromptValue` is an abstraction with two concrete types:
+  - `StringPromptValue`: Contains a single string, used for PromptTemplate.
+  - `ChatPromptValue`: Contains a list of `BaseMessage` objects with roles and content, used for ChatPromptTemplate.
 
 ## Prompt Composition
 
-Prompts compose via the `+` operator, merging messages and variables.
+Prompts compose via the `+` operator, which concatenates messages and merges input variables. Composition creates a new immutable prompt instance without modifying originals.
 
 ```python
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
+# System context
 system = ChatPromptTemplate.from_messages([
     ("system", "You are a helpful assistant. Your name is {bot_name}."),
 ])
 
-conversation = ChatPromptTemplate.from_messages([
+# Chat history placeholder
+history = ChatPromptTemplate.from_messages([
+    MessagesPlaceholder("chat_history"),
+])
+
+# User input
+user_msg = ChatPromptTemplate.from_messages([
     ("human", "{user_input}"),
 ])
 
-combined = system + conversation
+# Compose left-to-right
+combined = system + history + user_msg
+
 # Equivalent to:
 # ChatPromptTemplate([
 #     ("system", "You are a helpful assistant. Your name is {bot_name}."),
+#     MessagesPlaceholder("chat_history"),
 #     ("human", "{user_input}"),
 # ])
 
-result = combined.invoke({"bot_name": "Alice", "user_input": "Hello!"})
+result = combined.invoke({
+    "bot_name": "Alice",
+    "chat_history": [
+        ("human", "Hi Alice"),
+        ("ai", "Hello! How can I help?"),
+    ],
+    "user_input": "Tell me a joke."
+})
 ```
 
-**Rules:**
-- When combining `ChatPromptTemplate` instances, messages are concatenated.
-- Input variables from both templates are merged.
-- Partial variables are merged; conflicting keys raise an error.
-- Templates must have compatible formats (both f-string, both mustache, etc.).
+**Composition Semantics:**
+- **Message concatenation**: When combining `ChatPromptTemplate` instances, messages are concatenated in order.
+- **Variable merging**: Input variables from all templates are collected into a single set. If both operands require the same variable, it appears once in the combined template.
+- **Partial variable merging**: Partial variables from both operands are merged. If both define the same partial variable with different values, an error is raised.
+- **Format compatibility**: All templates must use the same `template_format` (all f-string, all mustache, etc.). Mixing formats is not permitted.
+- **Immutability**: The `+` operator returns a new instance; original templates are unchanged.
 
-## Prompt Loading from Files
+**Supported Operand Types:**
+- `ChatPromptTemplate + ChatPromptTemplate` → concatenated messages
+- `ChatPromptTemplate + BaseMessagePromptTemplate` (e.g., HumanMessagePromptTemplate) → appends single message
+- `ChatPromptTemplate + BaseMessage` (e.g., SystemMessage instance) → appends raw message
+- `ChatPromptTemplate + str` → converts to HumanMessagePromptTemplate and appends
+- `ChatPromptTemplate + list/tuple` → converts to ChatPromptTemplate via `from_messages()` and concatenates
 
-**Note:** Prompt serialization and loading via the old `save()` / `load_prompt_from_config()` API is deprecated in favor of using `dumpd()` / `loads()` from `langchain_core.load`.
+## Prompt Serialization
 
-To load a prompt from a JSON or YAML file, use the modern LangChain serialization API:
+**Historical Note:** The old `save()` / `load_prompt_from_config()` API is deprecated. Use `dumpd()` / `loads()` from `langchain_core.load` instead.
+
+### Serializing Prompts
+
+Prompts can be serialized to dictionaries (JSON-compatible) using `dumpd()`:
+
+```python
+from langchain_core.load import dumpd
+from langchain_core.prompts import ChatPromptTemplate
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant."),
+    ("human", "{input}"),
+])
+
+prompt_dict = dumpd(prompt)
+# Returns: {"lc": 1, "type": "constructor", "id": [...], "kwargs": {...}}
+
+# Save to JSON
+import json
+with open("prompt.json", "w") as f:
+    json.dump(prompt_dict, f)
+```
+
+### Deserializing Prompts
+
+Load prompts from dictionaries using `loads()`:
 
 ```python
 from langchain_core.load import loads
@@ -484,45 +624,77 @@ with open("prompt.json") as f:
     prompt_dict = json.load(f)
 
 prompt = loads(prompt_dict)
-# Returns a deserialized PromptTemplate or ChatPromptTemplate
+# Returns the reconstructed PromptTemplate or ChatPromptTemplate
 ```
 
-Prompts can be serialized to JSON using `dumpd()` from `langchain_core.load`, enabling version control and sharing:
-
-```python
-from langchain_core.load import dumpd
-from langchain_core.prompts import ChatPromptTemplate
-
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are helpful."),
-    ("human", "{input}"),
-])
-
-prompt_dict = dumpd(prompt)
-# Contains nested structure compatible with loads()
-```
+This enables version control, configuration management, and sharing of prompt definitions across teams.
 
 ## Integration with Agent Factory
 
-Prompts are a core input to the **Agent Factory** (`create_agent`), providing the conversational context for agent reasoning and tool use.
+Prompts are a core input to the **Agent Factory** (`create_agent`), providing the conversational context and system instructions for agent reasoning and tool use.
+
+### Agent Factory Prompt Parameters
+
+The `create_agent` function accepts prompts in two ways:
 
 ```python
 from langchain.agents import create_agent
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
-system_template = ChatPromptTemplate.from_messages([
-    ("system", "You are a helpful weather assistant."),
-])
-
-# Or use a simple string
+# Method 1: Simple string (auto-wrapped as system message)
 agent = create_agent(
     model="openai:gpt-4o",
     tools=[weather_tool],
     system_prompt="You are a helpful weather assistant."
 )
+
+# Method 2: Full ChatPromptTemplate (gives more control)
+template = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful weather assistant. Your name is {agent_name}."),
+    MessagesPlaceholder("chat_history"),
+    ("human", "{input}"),
+])
+
+agent = create_agent(
+    model="openai:gpt-4o",
+    tools=[weather_tool],
+    prompt=template,
+)
 ```
 
-The agent factory internally compiles prompts with the model and tool bindings, managing message flow through the state machine. Middleware can intercept and modify prompts before model invocation via the `wrap_model_call` hook, enabling use cases like prompt optimization or safety filters.
+### Prompt Flow in Agents
+
+The agent factory internally:
+1. Compiles the system prompt with the model and tool bindings (via `model.bind_tools()`)
+2. Manages message flow through the state machine, accumulating conversation history
+3. Injects tool execution results as `ToolMessage` objects between model invocations
+4. Passes the full message history to the model on each loop iteration
+
+### Middleware Integration
+
+Middleware can intercept and modify prompts before model invocation using the `wrap_model_call` hook. This enables:
+- **Prompt optimization**: Rewrite prompts for brevity or clarity
+- **Safety filtering**: Remove or redact sensitive instructions
+- **Dynamic context injection**: Add retrieval results or real-time data to prompts
+- **A/B testing**: Switch between prompt variants based on conditions
+
+```python
+from langchain.agents import create_agent
+
+def optimize_prompt(messages, config):
+    """Middleware that modifies the prompt."""
+    # Filter messages, add context, etc.
+    return messages
+
+agent = create_agent(
+    model="openai:gpt-4o",
+    tools=[weather_tool],
+    system_prompt="You are a helpful assistant.",
+    middleware=[("wrap_model_call", optimize_prompt)],
+)
+```
+
+See the **Agent Factory** documentation for full details on state machines, middleware stacks, and control flow.
 
 ## Security Considerations
 
@@ -543,11 +715,11 @@ output = prompt.format(user_input=user_input)
 
 ### Jinja2 Sandboxing
 
-When using Jinja2 templates, LangChain applies `SandboxedEnvironment` by default, blocking access to dunder attributes (`__class__`, `__globals__`, etc.). However:
+When using Jinja2 templates, LangChain applies `SandboxedEnvironment` by default to block access to dunder attributes (`__class__`, `__globals__`, etc.). This is a defense-in-depth measure, but:
 
 - **Do not accept Jinja2 templates from untrusted sources.** Sandboxing is best-effort, not foolproof.
-- Regular method calls and attribute access are still allowed (e.g., `obj.method()`).
-- If you must use Jinja2, prefer `f-string` or `mustache` for untrusted inputs.
+- Regular method calls and attribute access are still allowed (e.g., `obj.method()`, `obj.attr`).
+- For applications requiring user-provided templates, **prefer f-string or mustache over Jinja2**, as they have simpler syntax with fewer escape paths.
 
 ```python
 # Safe: f-string template from user, validated at construction time
@@ -573,24 +745,108 @@ print(partial.input_variables)   # []
 
 This immutability enables safe composition and caching in pipelines.
 
-## Observability and Tracing
+## Error Handling and Validation
 
-All prompts support LangChain's standard tracing and observability hooks:
+Prompts validate configuration at construction time and inputs at format time.
+
+### Construction-Time Validation
+
+**Restricted Variable Names:**
+
+Variable names `"stop"` are reserved internally and will raise a `ValueError`:
 
 ```python
+from langchain_core.prompts import PromptTemplate
+
+try:
+    prompt = PromptTemplate.from_template("{stop}")  # Invalid
+except ValueError:
+    print("Cannot use 'stop' as a variable name")
+```
+
+**Overlapping Variables:**
+
+If the same name appears in both `input_variables` and `partial_variables`, a `ValueError` is raised:
+
+```python
+try:
+    prompt = PromptTemplate(
+        template="{x}",
+        input_variables=["x"],
+        partial_variables={"x": "value"},  # Conflict
+    )
+except ValueError:
+    print("Variable 'x' cannot be both required and partial")
+```
+
+**Few-Shot Template Constraints:**
+
+`FewShotPromptTemplate` and `FewShotChatMessagePromptTemplate` require exactly one of `examples` or `example_selector`:
+
+```python
+from langchain_core.prompts import FewShotPromptTemplate, PromptTemplate
+
+try:
+    template = FewShotPromptTemplate(
+        examples=[...],
+        example_selector=selector,  # Error: both provided
+        example_prompt=PromptTemplate.from_template("{input}"),
+        suffix="...",
+    )
+except ValueError:
+    print("Provide either 'examples' or 'example_selector', not both")
+```
+
+### Format-Time Validation
+
+**Missing Variables:**
+
+Calling `format()` or `invoke()` with missing required variables raises `KeyError`:
+
+```python
+prompt = PromptTemplate.from_template("{a} and {b}")
+try:
+    prompt.format(a="hello")  # Missing 'b'
+except KeyError as e:
+    print(f"Missing variable: {e}")  # "b"
+```
+
+**Extra Variables:**
+
+Extra variables are silently ignored (not considered errors):
+
+```python
+prompt = PromptTemplate.from_template("{a}")
+output = prompt.format(a="hello", b="ignored")  # 'b' is ignored
+```
+
+## Observability and Tracing
+
+All prompts support LangChain's standard tracing and observability hooks via the Runnable interface:
+
+```python
+from langchain_core.prompts import ChatPromptTemplate
+
 template = ChatPromptTemplate.from_messages([
     ("system", "You are helpful."),
     ("human", "{input}"),
 ])
 
-# Add metadata for tracing
+# Add metadata via with_config()
 template_with_metadata = template.with_config({
-    "metadata": {"version": "1.0"},
-    "tags": ["important"],
+    "run_name": "my_prompt",
+    "metadata": {"version": "1.0", "owner": "team_a"},
+    "tags": ["important", "production"],
 })
 
+# Metadata propagates to invoke() calls
 result = template_with_metadata.invoke({"input": "hello"})
-# The invoke is traced with the given metadata
 ```
 
-Metadata and tags are propagated to LangSmith and other observability backends, enabling debugging and performance analysis.
+**Tracing Integration:**
+
+- **LangSmith**: Metadata and tags appear in LangSmith traces, enabling performance analysis, debugging, and cost tracking.
+- **Callbacks**: Prompts emit `on_llm_start` and `on_llm_end` events if callbacks are attached via config.
+- **Run ID**: Each invocation receives a unique `run_id` for correlation with downstream model and tool calls.
+
+This enables comprehensive observability across the entire chain: prompt → model → tools → output parser.

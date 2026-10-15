@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:292ef3af03c17963611499165f6045b27db7700b522fb3d608fb027272c23f40",
+  "pageVersion": "sha256:13026cbce7b40f77730284ccf835663163ad8dedb3e7982ae616c6a823829819",
   "claims": [
     {
       "id": "claim_6ce968382a514edb90e74830ccdebef7",
@@ -126,11 +126,11 @@
       "evidence": [
         {
           "resource": "repo://libs/langchain_v1/langchain/agents/middleware/human_in_the_loop.py#L427-L525",
-          "version": "repo-lines-v1:sha256:d5b7ad81526ab0894786de5e15377062824c5abe2a939e57d2e3181282bfbb71:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzZTAxMDE1M2ZkZjExNWY2NWJhMDc2M2QxMjMwYmFiMDVlZGJlMmVlZjAzMTNmN2QwNWMzMDdiYTYwY2MyOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0ZjFkY2I1ZGY0ZmVjZjljOTFkZjUzYWFkNGZmZTMyY2RlNjU0OTlmNmUyMGI2YTZjMTk0ZTgwODU3ZjM4ODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5NDIwYTZkZGJmYjhhNWJmZTJhODIxMWU2NjMxODRiZWNhOWI1ZTM3Y2RhYWE5MTZjYjc2YzUyNWY0MWQ1MWQifQ"
+          "version": "repo-lines-v1:sha256:e1d5320c550e34b107997fccf4edc6c75ef59af50d419657168d483c8b52cc22:eyJzZWxlY3RlZExpbmVDb3VudCI6MTY0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIzZjFiMmQwNDM3ODY4M2I2NmI1YTE2MjFlYTdmODQ5OWUxZDQyNzNmY2FkMWRlYjU0NzQ4MjFhMzYzNzdmNjJhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlNmIwNDQ5MTQ2OTcyMmU4MzYzYTk0ZTQwNDQ1MzhlMDEzYTJhMjE3ZTM2YjFlNTY4YmE2MGFjYjdiNGM4ZjJlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNGYxZGNiNWRmNGZlY2Y5YzkxZGY1M2FhZDRmZmUzMmNkZTY1NDk5ZjZlMjBiNmE2YzE5NGU4MDg1N2YzODg2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJmOTQyMGE2ZGRiZmI4YTViZmUyYTgyMTFlNjYzMTg0YmVjYTliNWUzN2NkYWFhOTE2Y2I3NmM1MjVmNDFkNTFkIn0"
         },
         {
           "resource": "repo://libs/langchain_v1/langchain/agents/middleware/human_in_the_loop.py#L541-L577",
-          "version": "repo-lines-v1:sha256:48e15a5cb6fc7b73beba33b6dacd10da9d0c18d97848d6bb9d4aef9bb9474e14:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkMGZkOTI4ZjAxZjZmOGJlNzNkNDYzZWUzOWIwZWFkMDc0ZTYwYzE1ZDczMjBiNDJhYWUxM2Q2OTA3Njg5ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ODdmOTg4ZTQxYjVlOGEzY2M5Njk0N2JkNDQzYjE4NjFkNjI5ZjYxMjBiNDhmZDY5Yzg4NGI1MjhiZDc3NjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3OTQwMWU1ZTg4ZDViNTIwYzRmYWM5ZTAxOTcyNDdhZmJmNzEzYzhlZmExMzBlOWFjM2M4ODFmYWIwY2EyZTEifQ"
+          "version": "repo-lines-v1:sha256:c3ebe5275d223dc91962af3ed54a73252f181f02490120037630db0591d62b09:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkMGZkOTI4ZjAxZjZmOGJlNzNkNDYzZWUzOWIwZWFkMDc0ZTYwYzE1ZDczMjBiNDJhYWUxM2Q2OTA3Njg5ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ODdmOTg4ZTQxYjVlOGEzY2M5Njk0N2JkNDQzYjE4NjFkNjI5ZjYxMjBiNDhmZDY5Yzg4NGI1MjhiZDc3NjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3OTQwMWU1ZTg4ZDViNTIwYzRmYWM5ZTAxOTcyNDdhZmJmNzEzYzhlZmExMzBlOWFjM2M4ODFmYWIwY2EyZTEifQ"
         }
       ]
     },
@@ -195,10 +195,114 @@
           "version": "repo-lines-v1:sha256:7ef1873b30d8420a5f483c882f53c472a9a66cdd2300c0a6b2eb017f7231fb8b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjkzMzljMzIxNmJjMDNjMjFmNDQzYzdhYjdmN2M2Y2JmMDFmMTUwZmIyMjVjMzcwNGRjOWQ2NTdhYWM5Y2QyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDkxMzU2OTQ0NGM1ZjQwZjJiMTZkZmU3Y2EyYzc2YWJhYjgwODk2M2RiMTY1ODM5OGU2ODY5YmNiODg2ZWUzNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmNlZmM3YzlhOGMyNDMyNmM2MGIwMGNjN2E3YzIyZjMxMTQzNWE0OWFmMTMzNzg2ZDczZWExOTcwNTIwNzMzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGViMjc1MTdkNmUzZjFiMDA4MTUyN2MxZDdhNzRlMTJjMjU2ZGZhZjhkOTRkNDllM2UwYTE4MGIxM2NmZDAwMiJ9"
         }
       ]
+    },
+    {
+      "id": "claim_096cc3635e75466895a7bc9053894063",
+      "statement": "HumanInTheLoopMiddleware supports two distinct interrupt modes: batched (default, one interrupt per model turn with all gated tools collected into single HITLRequest) and per_call (one interrupt per gated tool via wrap_tool_call hook); batched mode processes decisions in after_model hook and applies modifications in wrap_tool_call, per_call mode receives decision synchronously and executes or blocks tool immediately.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/human_in_the_loop.py#L523-L564",
+          "version": "repo-lines-v1:sha256:61c6c0bcc95d589d6c8aa8bd4112e32bd1fda2d8cfe3db1a83502f6b7b1e427c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyNzg0YmMwOGNjN2I5OTQ1ODg1NmQzYTVlYjBhMGIwY2NjODUzZmZiYmZmYmE2NDk3YzRhOTY2YjM0YjExODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZjkxN2I1NGQ3ODk0ZDFjYzMzMmI0YjI1MWUzZWNkNzA1NzE5NTE2NzQwNDEyMzM1ZWFmNzEwYTNlNTlkYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NWNhNDg0ZmFiMDljYWU2OWIyNTJjMThhY2Q5YzdjYjc5MzQ1NTIwYmRjYTFkNmEyM2NhM2ZjY2NmMWU4ZTEifQ"
+        },
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/human_in_the_loop.py#L758-L859",
+          "version": "repo-lines-v1:sha256:3943e4668af0c3795be53d59428c008b2fc27ff1abe4aa657c964343efae8d7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1M2UwMTAxNTNmZGYxMTVmNjViYTA3NjNkMTIzMGJhYjA1ZWRiZTJlZWYwMzEzZjdkMDVjMzA3YmE2MGNjMjhiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlNmIwNDQ5MTQ2OTcyMmU4MzYzYTk0ZTQwNDQ1MzhlMDEzYTJhMjE3ZTM2YjFlNTY4YmE2MGFjYjdiNGM4ZjJlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0MGFlMjQxMjI1MGQ0ODliNTM3YTllN2FjYTM2ZDJhMjBjYWZiOGEwNDgxYmJiNzg1NTIzOWNmNzk3NTUyZjMzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJmOTQyMGE2ZGRiZmI4YTViZmUyYTgyMTFlNjYzMTg0YmVjYTliNWUzN2NkYWFhOTE2Y2I3NmM1MjVmNDFkNTFkIn0"
+        },
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/human_in_the_loop.py#L979-L1010",
+          "version": "repo-lines-v1:sha256:9c0e2237728e0a57d12dead8a206bd6195d59ce95f8133c040472a0fbc74b6a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0NTJkY2RlODgxMjZjNGM1Njg1OTMwOGFjNzY3OWU1ODBkYmJiMWNhODNkYjVkYjAxZTJkMTJmMzVhNDdjZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5Y2FkMTQ5MTVkMTg5YTFkY2I1MTQ2NjAyZjAxNDg3ZGE5YzNhYWMyZTZmNzM3NTE4NDVmZjhlYzEyNDFhNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyNGRlOGRiYzU4YmIyMmRjNDIzNjhlODY3MWMyNmJhOWQ1NGVhZmEzZWE5OWJkYzM2N2ZlZmFiOTJhMzE2OTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkMzljOTgwOTA2NDFmNWU4NGRkY2QyZTJkYmVlNjZkNWJjNGY1OTQ4YjVlYWY0ZWZjODlkZWE0NTIwYmIzMzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e3c4312df67647839e1ad7cf9d1be858",
+      "statement": "HumanInTheLoopMiddleware accepts description configuration as either static string or callable (description_factory) that receives tool_call, state, and runtime; callable descriptions enable dynamic descriptions based on tool arguments and agent state, improving review context.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/human_in_the_loop.py#L304-L348",
+          "version": "repo-lines-v1:sha256:8ade0a89272c6efbe2842474b45ab53a76776b6de2fa53f36e7aacb87354f9a3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxZDcxNDdiNDM1NjkxM2M1Y2I2NWZiM2ExNmE3M2Q3MTlkYjI5Y2Y3M2RkNGUwMDU0NjI5YTUzNDliNjU3NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTcxNTI1NzJlZTg0ZjEwOTA2Yzc0YjlmMmE5MjQzNGRkYWIwZTNjNDI4MTNiMDRlNTk3ZWZjZWM5NTFiMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlMTAyYTE5YmE2NTQwZmFhMjNhMTQ4NTZkYmM0MTMyZTQ5MjFkYjA4OWM1NjA5NThjZGQ2ZDlkYTAwZjkyODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwYTViOTY3NjYzOThkMDI3Y2YzYWIzZmY0ZGY4MGE0ZjkyMTA1MGQ0MTc3OTdhNTM2MGU2YzMzYTk4MWUzOWYifQ"
+        },
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/human_in_the_loop.py#L611-L625",
+          "version": "repo-lines-v1:sha256:160d9373916a6ad7499a16bda15913fe84bb7ad6a75600ba316cb4ee0c6d9eec:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3MmRjOWNiYzc0NTRlOGNlOTViOTEwY2M0YWZkN2I5ZTNjNjIwMWY3MzIwM2M5NTIzNjYzNjBiNjAyYTgxOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3ZjdkNzkzMzA1ZDc4N2UwODc4NDQyMmViMzdiODI4NmIyMWExZWY1NTQ0ZTZlYWRkZWM4ODBhOGNjNjFhNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1NGI5OGM2YzFkMDQwZjkyZTNjMjE2MjViNGNkMWU5ZDgyM2YzNzM3ZjIyZjQ5ZDliOGY5NTBmYmY2OGQxYmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f7961f7183c347979341887cbbcdb218",
+      "statement": "Middleware can redirect agent execution via ephemeral jump_to field in state (set in before_model or after_model hooks); valid values are 'tools' (execute tool calls), 'model' (loop back to model), and 'end' (terminate agent); jump_to is consumed by agent loop and not persisted to state.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/types.py#L349-L368",
+          "version": "repo-lines-v1:sha256:6341ae8ca446ca57aee55bd0032315147777efbe4703f1942fb216a34a7534dd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhY2VkMmY4NGViMmFmMmUxMDNkMjBjYjAwY2NmZmM5ZjcyNzZiZTFlN2U3N2Q3ZTc0NjNlOGY1YzdkYTYzMTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1NTA5ZTcyNDIwZjVjNzRkZGNjMmJhNmJmOTcyNmNmODI3ODA2MzliMzE3ZTUyMzA2ODgzYjdmMjQ5MjYyZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5YTEyNTZkMDkxOGM3ZWJkYWYzNjhjNTczN2NjMjY4MTVhYmVhNWUwNmVmYTRlMzllNmM3NTc2N2Q4ZDQ4ZDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e2f7ca437e84b2c8c3fe8ef35fb7b0c",
+      "statement": "LLMToolEmulator middleware intercepts wrap_tool_call to emulate specified tools using an LLM instead of executing them; useful for testing without real tool execution; can emulate all tools (default when tools=None) or specific tools by name or BaseTool instance; includes InternalCallTransformer to keep emulation model calls out of run.messages.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/tool_emulator.py#L29-L78",
+          "version": "repo-lines-v1:sha256:3d166b3970ce532575d7ee5d7219b01f8c05de54c90670750b204db217025f20:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmZmIwM2Y1ZWRhNTY1MzQ0NzIzYjVkN2U1YzA1NzMxMGQ0ODdlZGI5Yzg2YmZmYjA2Y2NlYjNmZWQwOTdlN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTcxNTI1NzJlZTg0ZjEwOTA2Yzc0YjlmMmE5MjQzNGRkYWIwZTNjNDI4MTNiMDRlNTk3ZWZjZWM5NTFiMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4ODQ1MzI1MjE4ODA4MzBiYzYxZjExYTI2NmUyNjFiYWYwYmE5MzY1NzZhNDNlYjFkYmJiODkwZmEyZTc3OTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzMzEwOTVkNWZkOTQ5N2Y0M2RkNjkwMWE5M2Y3NDNiYjY1NTUwNmEwNTBlMTVjMjgxNWJmMWM5ZDRmMTMyOTgifQ"
+        },
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/tool_emulator.py#L80-L120",
+          "version": "repo-lines-v1:sha256:4c119044ae5817272e3eddf4f67bb3772ae188fa69658145eef57d78a0b73313:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmZDdhMDdhODNkZDE5OTZmYjUxNjg0YjQyYWVjYWY0ZTkwZmI3OGJhNzIzMGU1NDJlZDdiZDAxZDQyMzAxYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0Mzg4MDg5ZTNmNDY1MDkxZGUwMWYwMTAyNWFkMGI4N2M0Y2I4Y2FlYzkxMmE3YzQ0MTAzYTVjMDQ5MzAxNzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmMmQwZDNjZDNkYmIzMmRiNTQzNDMzMDQ5ZTMxYzlhMTdjN2U0NWM2MDczZDY4N2VmOWM2ZTZlMmZjNjFmNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViYzczMjFlNzlkZGRjYzcxOGYwNTc4NTJhMDdhMDVjZTMwZmMwMjk0MjI2YzQ2MWI3ZWRhZmJlOTBiMTFlMTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d4ac8555e4f42a488a824ced05bd155",
+      "statement": "LLMToolSelectorMiddleware intercepts wrap_model_call to delegate tool selection to a separate LLM model rather than using the primary model's tool selection; enables lightweight first-stage filtering of available tools before the main agent model processes the request.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/tool_selection.py#L38-L96",
+          "version": "repo-lines-v1:sha256:0932cff0f9975704b323393050132b76d371acc2b47c4a902e7d8dbee84a02c0:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0OWI3MjljOTNlMTZhYTgzMWU5ODE2MjgxNGI4NzEwM2IxYTM5MjgyNjE2YjBjMDlkMmQ0NjQ0MDAxZWFhMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMDVlMTY3MzFjYWU1NjFmNmYyNDRmYWMzNjJlYWQzNjk2YTE2YzIwNmZkZTVmODc3ODJhNjczOWFjMTUyMmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YzFjNDYyZTJhMzlkNzQ3NTlmNWUxYjEyNmY3NjgzYTJiNzMwMTE4ZTE4ZjUxMjJiMDhjZWRlZWI2NTBlMjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1NDJhZGZlZDk1N2FhNDRlYTE5MzE1NzE2ZDc5OTY4NWM4ZDVhODJkN2JmMWQzODU4NTBmOWM4Njg0OWEyN2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a82223b41f6845eea15a0a37d2012a55",
+      "statement": "SummarizationMiddleware automatically summarizes long message histories to prevent context window overflow; operates via before_model or after_model hooks; uses configurable trigger clauses (token count, message count, or custom predicates) to determine when to summarize.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/summarization.py#L1-L100",
+          "version": "repo-lines-v1:sha256:034e6e553522fa04a4c9033faa5fbaf397086c13a17faf43fbeb41370284341c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxZDlkMTM2ZTg3YThkMDhmZGUyZjY0YzI1NzBkMjI1N2EwNzgzNTgzMjBhYjEzMGZkNzYyOTczZTczZjVkYzIzIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkNDJkYzM2OTc1ZWFlNjMzOGQ0MDJkMDRhNTVmNjg2Y2VhNTg3ZGQ3OGFiZTQ5OGQzMTkyYmU2NWRkZTE3MzI0IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyNjliMmFlYmQ3MGU5OWI2NDFiZDMwOTBlN2FiMmU5YjI2NzY3ZTAwMTBiZTMyMDU2MmQ0Y2YzYjJmNmE0MTA3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e63b83d12604e9f9b3cf91fd0f018c4",
+      "statement": "Middleware wrap_model_call and wrap_tool_call hooks can catch and transform exceptions; should propagate control-flow exceptions (GraphBubbleUp, KeyboardInterrupt, SystemExit) immediately without handling; middleware should return None from error handlers to propagate exceptions or return message/response to convert them.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/model_retry.py#L221-L273",
+          "version": "repo-lines-v1:sha256:81b64006e47dcee95e25c9e0a3c25246876a050db7cce4edd0d04618a3a7d908:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyNzFhMGExMzM4YjZlODZjZGFiNjVjNjliODU0NzgxNzIxNWJkYjA0M2MxMDY3ZGM0MTU4MmUwMjE1ZWVmZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkYmJlM2U0MWE2YTcwOWJmMTY4YWYzNzIxMTg0MWIyMmExMjVjNGQ2NjczMDBmNGNmNzgyOWZjYWE4MTQ5YmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIwYjRhOWJmMzg5YTMwZjU5NzVkZTk1ZTJjMDYyMDFiNjJmYTVlNjQzZWU2MmNiMWJiYjYwOGNmZDRlNmUxN2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyMzc1NjhmMzcxYzY2NGZhNzM5ZmU2ZGYzNzAyZTc2MjUzZTA3NDMyOGQwMjU2YTRhYWQzZGVkOTlkN2Y4YTQifQ"
+        },
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/tool_error.py#L37-L209",
+          "version": "repo-lines-v1:sha256:0058bc9bf5357e8783dbaa9d5659e1ab16942cbbe1411d427870d68f80ede6f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTczLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjZTcxOGNhYmZmZjU5OTU0MGMyODhmNTdhZmVjYzM0ZTc1ODZhYjZlNjY4ZDlhMzFhYWM1MzY0YjI3ZDEzNzYxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1NTAzMmU5NjRkMDkzMjM1MWU1ZDE4NTI2OTI4MWIxNzFhM2EwOWIwOGIyODZlNjYxZWE0NzAzMjNjODJlYjRkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5NGM1MGNjNjFkNGY5YmE5ZTQ4MmMyOTQxMTA5YjA5MmZjNzBmZDBkYTUwMzQ1ZGM4YTcwNzFjY2Q5YjNhM2UwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d365426a92b4cf09b340e32551a6310",
+      "statement": "Middleware composition order critically affects behavior; example: ModelRetryMiddleware wrapping ToolErrorMiddleware which wraps HumanInTheLoopMiddleware enables retries on transient errors while preserving human approval gates; first middleware in list becomes outermost layer and controls interception priority.",
+      "evidence": [
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/factory.py#L281-L363",
+          "version": "repo-lines-v1:sha256:b42cf46af5c2dcecf084ce44e464eeae9d7fd00d4e1dc901d036f535c0880a2a:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1Y2IwNmM0MzdmOTk3ODhiZDVjOGM4MDY5MjU0MTI5YmVlN2ExNGYzMzc2ZTFjZWY2MTczYWUyMGE3Y2YyZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1YjFmZmVmYzM5MGQ5ZDdmOGJjY2JjNzJjNWI4ZmI0ZjgxMjU1YjBmMWY4YTc1NjE4Y2YyMjdiNDk5N2UyYWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4YjE2YTdhZjFkZDFlYzI4OTY3MWRhMWU5MmExY2UzN2I4MTA0YWFlYjZlYjU3MzY1NmU4NWVhMzU0YTNhY2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwMmJmMmY4NjM0YTBlNzkzYzRhM2Y5Yjg1MjM1MTViNjgwMmI0NDY3OTZkOGRmMGJhYWZiNWVhOWY1NjVmZWIifQ"
+        },
+        {
+          "resource": "repo://libs/langchain_v1/langchain/agents/middleware/human_in_the_loop.py#L551-L560",
+          "version": "repo-lines-v1:sha256:93f48b10eaa21356f0e6a666ca2a41389696cd9e330d02b0e5f97e1e42794a14:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0NmRkNDYyMDBjMDIyZGE4MjcwY2NmYzI4YzhlOGRhODEwNWFiOGU0NzE4ZTYyNTVkMzdjYmY0MjU4MWQzODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyZDc4NDY2ZDhjOWU4NzllYzVmOGIyZGU2MTFjNDA2MGVlNmYwNjZmNGM3YzAwZTI2ODg5NDZlNzEyMjU4MzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZjQ1Mzc1N2JjNDE0M2RmZDgzMzc0OWI3MjQ0NjIwOWZjZGE5MjI4NmFjN2VhMjRhNWY3ZjczODhhZmViYjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjMWQzYTg0ZGU0MDAwOTA4MThjN2NlMWYyZjk5MzNkMGE5ZDg0NDA3NzQyYzA0MWJiZTE3ZGM0YzllNjA1YTMifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.5.0",
-    "at": "2026-09-28T08:35:20.640Z"
+    "at": "2026-10-15T08:27:20.856Z"
   }
 }

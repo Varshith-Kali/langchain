@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:05e90b9de166a5a7213cee462a99c10236b8c8eba605f2b5a856779baad552a6",
+  "pageVersion": "sha256:f16d2615f1587e1fdb3f45d3c9d169407f688ff9911d7b1a4aafc48996149e76",
   "claims": [
     {
       "id": "claim_347664eb68464142b558791c7a95093f",
@@ -8,11 +8,11 @@
       "evidence": [
         {
           "resource": "repo://libs/partners/openai/langchain_openai/__init__.py",
-          "version": "repo-file-v1:sha256:d08e06dea1f954a477fa8951e2a8387a10396d07b92a3a60fdced307c136a84f"
+          "version": "repo-file-v1:sha256:5673ccbe8f53267c2027dd390051424928a6e1e744c2f8c8a418960a29dccf4d"
         },
         {
-          "resource": "repo://libs/partners/openai/langchain_openai/chat_models/base.py#L2904-L4266",
-          "version": "repo-lines-v1:sha256:862193457763433b2f6f9542715a9e049a81be74ab7f06720f0a8e903b8d88b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM2MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDkwZGE4NzEzZTc1NWY1NTJkNWJiMzVmN2IyZjhlMDBlN2IwNDM2NWM3NmFiODJhNzQ0ZjBlNTk1ZTIwNjA2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjNkZjJhY2YwNmU4YzNmMDNjNzEzNWM2ZThhYzVhOWNhNTQzMmFiZTA2YTc0YWNhMGZkZDlhNTNhMDA4Zjk4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDFiZDhjNmEwMjAwNzc3OTEwNjNiZTUxNTIxZWM4MmI5ZWIwYzIxMWRiZmY1Y2I1ZGNmYTY5ODEyZTVmNzU3MSJ9"
+          "resource": "repo://libs/partners/openai/langchain_openai/chat_models/base.py#L2917-L4278",
+          "version": "repo-lines-v1:sha256:ccd8fabeb22bcdbd80761d22917ea963230ddd8074b1cf13b86138ed1c020d8e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM2MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDkwZGE4NzEzZTc1NWY1NTJkNWJiMzVmN2IyZjhlMDBlN2IwNDM2NWM3NmFiODJhNzQ0ZjBlNTk1ZTIwNjA2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkwOWE1M2E2MThkMDI4ZTFkMzAwMGMwYTdhYmNlZWNiZTVmYjM3ZjRlNTExZWZlNDY2NDNmYWQ2ZTY2ODcyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjNkZjJhY2YwNmU4YzNmMDNjNzEzNWM2ZThhYzVhOWNhNTQzMmFiZTA2YTc0YWNhMGZkZDlhNTNhMDA4Zjk4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTc4NTc4NzllZmJlZTNjMGIyMWY4YzVhMzAxZWU2ZTU0NDk0YTI1N2RhZTA3Zjc5ZjJkMDQ1OTM5NDFmOGU2NCJ9"
         }
       ]
     },
@@ -259,6 +259,6 @@
   ],
   "verification": {
     "by": "openwiki/0.5.0",
-    "at": "2026-09-28T08:35:20.640Z"
+    "at": "2026-10-15T08:27:20.856Z"
   }
 }
